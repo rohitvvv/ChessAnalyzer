@@ -29,25 +29,6 @@ public class PGNParser implements ChessParser {
     }
 }
 
-
-/**
- * This one reads the Header for the PGN file. Validates it.
- */
-class PGNHeaderValidator implements HeaderValidator{
-
-    public boolean validateHeader(String header) {
-        return false;
-    }
-}
-/**
- * Parse the Game notations
- */
-class PGNGameValidator implements GameValidator{
-
-    public boolean validateGame(String game) {
-        return false;
-    }
-}
 /**
  * Composition of PGNHeaders and PGNGame
  */
