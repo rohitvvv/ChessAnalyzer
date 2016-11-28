@@ -3,7 +3,6 @@ package GameAnalyzer.chess;
 import GameAnalyzer.GameValidator;
 import GameAnalyzer.HeaderValidator;
 import com.google.inject.Inject;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 import java.io.File;
 import java.util.IllegalFormatException;
