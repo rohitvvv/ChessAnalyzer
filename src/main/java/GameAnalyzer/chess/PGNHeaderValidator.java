@@ -1,6 +1,7 @@
 package GameAnalyzer.chess;
 
 import GameAnalyzer.HeaderValidator;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Date;
 
@@ -9,21 +10,22 @@ import java.util.Date;
  * Validate the Header of PGN Files
  */
 final public class PGNHeaderValidator implements HeaderValidator{
-    //Stub Header. To be latter replaced.
-    public String theader="[Event \"Wch U20\"]\n" +
-            "[Site \"Kiljava\"]\n" +
-            "[Date \"1984.??.??\"]\n" +
-            "[Round \"?\"]\n" +
-            "[White \"Anand, Viswanathan\"]\n" +
-            "[Black \"Wolff, Patrick G\"]\n" +
-            "[Result \"0-1\"]\n" +
-            "[WhiteElo \"2285\"]\n" +
-            "[BlackElo \"2225\"]\n" +
-            "[ECO \"B09\"]";
 
+    /**
+     * Validates the header values
+     * @param header of a games in PGN file
+     * @return Boolean if the header field is valid field
+     */
     public boolean validateHeader(String header) {
-
-        return false;
+        checkNotNull(header);
+        String[] fields = header.split("\n");
+        String fieldMatcher = "[\\[[A-Z|a-z]*(\\s)+\"\\[A-Z|a-z|0-9|.|,|[0|1|1/2]-[0|1|1/2]|?|[\\s]*]*\"]";
+        for(String field:fields){
+            boolean matches = field.trim().matches(fieldMatcher);
+            if(Boolean.FALSE.equals(matches))
+                return matches;
+        }
+        return Boolean.TRUE;
     }
 }
 /**
