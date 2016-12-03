@@ -2,6 +2,8 @@ package GameAnalyzer.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
@@ -28,7 +30,11 @@ public class AppController implements Initializable {
     void initializeChessBoard(){
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col ++) {
+                ImageView pawn = new ImageView(new Image("images/pawn-w.png"));
                 StackPane square = new StackPane();
+                pawn.setFitWidth(50);
+                pawn.setFitHeight(50);
+                square.getChildren().add(pawn);
                 String color ;
                 if ((row + col) % 2 == 0) {
                     color = "white";
