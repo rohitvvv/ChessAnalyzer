@@ -1,13 +1,16 @@
 package GameAnalyzer;
 
+import org.junit.jupiter.api.Test;
+
 import GameAnalyzer.chess.PGNHeaderValidator;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by rohit on 28/11/16.
  * Test case which tests the Header Validator
  */
-public class PGNHeaderValidatorTest extends TestCase {
+public class PGNHeaderValidatorTest {
+	@Test
     public void testHeaderValidator(){
        HeaderValidator headerValidator = new PGNHeaderValidator();
        assertTrue(headerValidator.validateHeader("  [Event \"Wch U20\"]\n" +
