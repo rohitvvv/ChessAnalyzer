@@ -7,19 +7,19 @@ import java.util.List;
  * @author Rohit_Vaidya
  *
  */
-public interface Board {
+public interface Board<T> {
   /**
    * Initialize(Create) the Game Board	
    * @param x
    * @param y
    * @return A grid of initialized game board
    */
-  Object[][] initializeBoard(int x,int y);
+  T[][] initializeBoard(int x,int y);
   /**
    * Provided a List<Objects> create populate the game with a configuration
    * @param objects
    * @param position
    * @return
    */
-  boolean populateBoard(List<Object> objects,Object position);
+  boolean populateBoard(List<T> objects,Object position);
 }
