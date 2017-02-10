@@ -25,7 +25,7 @@ import javafx.util.Pair;
 	  * Takes an algebraic notation and returns a Pair 
 	  * @param an The chess algebraic notation
 	  * @return Pair<Integer,Integer>
-	  * 
+	  *  0,0           0,7 
 	  * 8 . . . . . . . . 
 	  * . . . . . . . . .
 	  * . . . . . . . . .
@@ -33,12 +33,13 @@ import javafx.util.Pair;
 	  * 2 . . . . . . . .
 	  * 1 . . . . . . . . 
 	  *   A B C D E F G H
+	  *  0,7           7,7
 	  */
  	 public static Pair<Integer,Integer> getMatrix(String an){
          String strippedNotation = an.substring(1,an.length());
          Integer file = File.getOridinal(strippedNotation.charAt(0));
          Integer rank = Character.getNumericValue(strippedNotation.charAt(1));
-         Pair<Integer,Integer> pair = new Pair<Integer,Integer>(file,rank-1);
+         Pair<Integer,Integer> pair = new Pair<Integer,Integer>(8-rank,file);
          return pair;
      }
   }

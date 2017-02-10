@@ -27,6 +27,7 @@ public class Pawn implements ChessPiece{
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 	    if(side==side.LIGHT){
 	    	//Populate the list
+	      
 	    }
 	    else{
 	    	
