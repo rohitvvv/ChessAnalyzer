@@ -1,13 +1,17 @@
 package GameAnalyzer;
 
-import GameAnalyzer.chess.PGNGameValidator;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import GameAnalyzer.chess.PGNGameValidator;
 
 /**
  * Created by rohit on 28/11/16.
  */
 public class PGNGameValidatorTest {
-    public void testPGNGame(){
+    @Test
+	public void testPGNGame(){
         PGNGameValidator gameValidator = new PGNGameValidator();
         assertTrue(gameValidator.validateGame("1.e4 c5 2.Nf3 Nc6 3.d4 cxd4 4.Nxd4 Qc7 5.Nc3 e6 6.Be2 Nf6 7.f4 d6 8.Be3 Be7\n" +
                 "9.Qd2 a6 10.O-O-O O-O 11.g4 b5 12.g5 Nd7 13.Bf3 Na5 14.Nf5 exf5 15.Nd5 Qd8\n" +
