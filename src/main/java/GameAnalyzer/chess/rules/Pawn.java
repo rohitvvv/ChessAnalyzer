@@ -19,14 +19,13 @@ public class Pawn implements ChessPiece{
     Side side;
     Pawn(String an,Side side){
         available = Boolean.FALSE;
-        side = side;
+        this.side = side;
 	}
 	
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 	    if(side==side.LIGHT){
-	    	
 	      
 	    }
 	    else{
