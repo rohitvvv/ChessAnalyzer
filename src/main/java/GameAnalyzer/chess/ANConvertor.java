@@ -36,7 +36,13 @@ import javafx.util.Pair;
 	  *  0,7           7,7
 	  */
  	 public static Pair<Integer,Integer> getPosition(String an){
-         String strippedNotation = an.substring(1,an.length());
+ 		 String strippedNotation = null;
+ 		 if(an.length()>2){
+ 			 strippedNotation = an.substring(1,an.length());
+ 		 }
+         else{
+        	 strippedNotation = an;
+         }
          Integer file = File.getOridinal(strippedNotation.charAt(0));
          Integer rank = Character.getNumericValue(strippedNotation.charAt(1));
          Pair<Integer,Integer> pair = new Pair<Integer,Integer>(8-rank,file);

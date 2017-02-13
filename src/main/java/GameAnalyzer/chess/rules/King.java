@@ -26,21 +26,18 @@ public class King implements ChessPiece{
     		 -1,-1,0,-1,1,-1,1,0,1,1,0,1,-1,1,-1,0
     };
     
-    @SuppressWarnings("restriction")
-	@Override
+    @Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 		//A king can move freely in all adjacent squares
         Pair<Integer,Integer> position = ANConvertor.getPosition(an);		
 		int x=position.getKey();
 		int y=position.getValue();
-		logger.info("x y "+x+" "+y);
 		int i=0;
 	    while(i<validKingPositions.length){
            list.add(new Pair<Integer,Integer>(x+validKingPositions[i],
         		                              y+validKingPositions[++i]));
            i++;
         }
-	    logger.info(list.toString());
 	    return list;
 	}
 
