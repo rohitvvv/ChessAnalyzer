@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
@@ -34,12 +35,11 @@ public class AppController implements Initializable {
                 StackPane square = new StackPane();
                 pawn.setFitWidth(50);
                 pawn.setFitHeight(50);
-                square.getChildren().add(pawn);
                 String color ;
                 if ((row + col) % 2 == 0) {
-                    color = "white";
+                    color = "#F2D8B5";
                 } else {
-                    color = "black";
+                    color = "#B58763";
                 }
                 square.setStyle("-fx-background-color: "+color+";");
                 chessBoard.add(square, col, row);
