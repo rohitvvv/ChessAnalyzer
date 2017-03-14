@@ -3,10 +3,15 @@ package GameAnalyzer.chess.rules;
 import java.util.List;
 
 import GameAnalyzer.Board;
+
+import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
 public class Bishop implements ChessPiece{
-
+    Side side;
+    public Bishop(Side side){
+    	this.side=side;
+	}
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 		// TODO Auto-generated method stub
@@ -23,6 +28,10 @@ public class Bishop implements ChessPiece{
 	public void setTaken() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public String toString(){
+		return "[B]";
 	}
 
 }

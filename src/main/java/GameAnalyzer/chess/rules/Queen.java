@@ -3,9 +3,15 @@ package GameAnalyzer.chess.rules;
 import java.util.List;
 
 import GameAnalyzer.Board;
+import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
 public class Queen implements ChessPiece {
+	Side side;
+
+	public Queen(Side side){
+      this.side=side;
+	}
 
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
@@ -23,6 +29,10 @@ public class Queen implements ChessPiece {
 	public void setTaken() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public String toString(){
+		return "[Q]";
 	}
 
 }

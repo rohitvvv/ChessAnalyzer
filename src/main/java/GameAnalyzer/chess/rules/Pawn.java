@@ -85,4 +85,9 @@ public class Pawn implements ChessPiece{
 	public void setDouble(){
 		longMove=Boolean.TRUE;
 	}
+
+	@Override
+	public String toString(){
+		return "[P]";
+	}
 }

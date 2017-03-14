@@ -3,6 +3,7 @@ package GameAnalyzer.chess.rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import GameAnalyzer.chess.Side;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +13,11 @@ import javafx.util.Pair;
 
 public class King implements ChessPiece{
     List<Pair<Integer,Integer>> list = null;
-    
+    Side side;
     static Logger logger = LoggerFactory.getLogger(ANConvertor.class.getName());
-    public King(){
+    public King(Side side){
     	list=new ArrayList<>();
+    	this.side=side;
     }
     //Encoding of possible positions
     //(--x,--y)  (x,--y)   (++x,y--)
@@ -50,7 +52,11 @@ public class King implements ChessPiece{
 	@Override
 	public void setTaken() {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public String toString(){
+    	return "[K]";
 	}
 
 }

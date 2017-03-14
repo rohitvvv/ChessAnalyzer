@@ -5,12 +5,15 @@ import java.util.List;
 
 import GameAnalyzer.Board;
 import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
-class Rook implements ChessPiece{
+public class Rook implements ChessPiece{
 	List<Pair<Integer,Integer>> list = null;
 	int range=8;
-	public Rook(){
+	Side side;
+	public  Rook(Side side){
+		this.side=side;
 		list=new ArrayList<>();
 	}
 
@@ -46,6 +49,11 @@ class Rook implements ChessPiece{
 	@Override
 	public void setTaken() {
 
+	}
+
+	@Override
+	public String toString(){
+		return "[R]";
 	}
 	
 }
