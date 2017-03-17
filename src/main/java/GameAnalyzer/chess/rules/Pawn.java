@@ -22,6 +22,7 @@ public class Pawn implements ChessPiece{
     //Indicates a two position move of a pawn
     boolean longMove;
     Side side;
+
     public Pawn(Side side){
     	available= Boolean.TRUE;
     	longMove = Boolean.FALSE;
@@ -31,24 +32,35 @@ public class Pawn implements ChessPiece{
     //Encode Pawn Moves
     //Includes capture moves as
     int []validLightPawnPositions = {
-    	0,-2,0,-1,-1,-1,1,-1
+		0,-1,
+		0,-2,
+	   -1,-1,//Capture move
+		1,-1 //Capture move
     };
     int []validDarkPawnPositions = {
-    	0,2,0,1,-1,1,1,1
-    };
+		0,1,
+		0,2,
+	   -1,1, //Capture move
+		1,1  //Capture move
+	};
    
     Pawn(String an,Side side){
         available = Boolean.FALSE;
         this.side = side;
 	}
-	
+
+	/**
+	 * Returns a list of valid moves on the board
+	 * @param an
+	 * @return
+	 */
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 	    int x,y,i=0;
 	    Pair<Integer,Integer> position = ANConvertor.getPosition(an);
-	    x=position.getKey();
-	    y=position.getValue();
+	    y=position.getKey();
+	    x=position.getValue();
 	    if(side==side.LIGHT){
 	    	  while(i<validLightPawnPositions.length-4){
 	              list.add(new Pair<Integer,Integer>(x+validLightPawnPositions[i],
@@ -89,5 +101,15 @@ public class Pawn implements ChessPiece{
 	@Override
 	public String toString(){
 		return "[P]";
+	}
+
+
+	public static void main(String...args){
+		List<Pair<Integer,Integer>> list = new ArrayList<>();
+		Pawn pawn = new Pawn(Side.LIGHT);
+		list = pawn.getValidMoves("b2");
+		int length = list.size();
+		for(int i=0;i<length;i++)
+			System.out.println(list.get(i));
 	}
 }
