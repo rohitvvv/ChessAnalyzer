@@ -22,6 +22,7 @@ public class Pawn implements ChessPiece{
     //Indicates a two position move of a pawn
     boolean longMove;
     Side side;
+
     public Pawn(Side side){
     	available= Boolean.TRUE;
     	longMove = Boolean.FALSE;

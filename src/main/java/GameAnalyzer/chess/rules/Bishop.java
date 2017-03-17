@@ -9,9 +9,11 @@ import javafx.util.Pair;
 
 public class Bishop implements ChessPiece{
     Side side;
+
     public Bishop(Side side){
     	this.side=side;
 	}
+
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 		// TODO Auto-generated method stub

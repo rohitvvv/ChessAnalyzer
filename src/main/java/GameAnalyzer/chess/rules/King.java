@@ -15,10 +15,12 @@ public class King implements ChessPiece{
     List<Pair<Integer,Integer>> list = null;
     Side side;
     static Logger logger = LoggerFactory.getLogger(ANConvertor.class.getName());
+
     public King(Side side){
     	list=new ArrayList<>();
     	this.side=side;
     }
+
     //Encoding of possible positions
     //(--x,--y)  (x,--y)   (++x,y--)
     //(--x,y)    (x,y)     (++x,y)

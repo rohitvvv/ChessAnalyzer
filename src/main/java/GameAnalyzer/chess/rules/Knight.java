@@ -8,10 +8,10 @@ import javafx.util.Pair;
 
 public class Knight implements ChessPiece{
     Side side;
+
 	public Knight(Side side){
 		this.side=side;
-
-	}
+    }
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 		// TODO Auto-generated method stub

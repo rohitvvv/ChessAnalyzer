@@ -12,6 +12,7 @@ public class Rook implements ChessPiece{
 	List<Pair<Integer,Integer>> list = null;
 	int range=8;
 	Side side;
+
 	public  Rook(Side side){
 		this.side=side;
 		list=new ArrayList<>();
