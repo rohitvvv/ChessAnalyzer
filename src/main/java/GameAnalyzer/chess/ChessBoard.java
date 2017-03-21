@@ -53,6 +53,7 @@ public class ChessBoard{
         }
 	}
 
+
     //Cell has a chess piece
 	class Cell{
 		boolean occupied=Boolean.TRUE;
@@ -75,6 +76,7 @@ public class ChessBoard{
 			  return "[ ]";
 		}
 	}
+
 	@Override
 	public String toString(){
 		StringBuffer boardBuffer = new StringBuffer();
@@ -85,6 +87,28 @@ public class ChessBoard{
 			boardBuffer.append("\n");
 		}
 		return boardBuffer.toString();
+	}
+
+	/**
+	 * Useful for Position Evaluation
+ 	 * @param side
+	 * @return
+	 */
+	public HashMap<ChessPiece,Integer> getPieceCount(Side side){
+		HashMap<ChessPiece,Integer> pieceCount = new HashMap<>();
+
+		if(side==Side.LIGHT){
+			for(int i=0;i<8;i++){
+				for(int j=0;j<8;j++){
+					//switch (ChessPiece)
+				}
+			}
+		}
+		//Dark
+		else {
+
+		}
+		return pieceCount;
 	}
 
 }

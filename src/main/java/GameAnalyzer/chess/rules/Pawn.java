@@ -103,13 +103,4 @@ public class Pawn implements ChessPiece{
 		return "[P]";
 	}
 
-
-	public static void main(String...args){
-		List<Pair<Integer,Integer>> list = new ArrayList<>();
-		Pawn pawn = new Pawn(Side.LIGHT);
-		list = pawn.getValidMoves("b2");
-		int length = list.size();
-		for(int i=0;i<length;i++)
-			System.out.println(list.get(i));
-	}
 }
