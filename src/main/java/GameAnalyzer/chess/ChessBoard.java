@@ -50,9 +50,17 @@ public class ChessBoard{
         }
 	}
 
+	public Cell getPiece(int x,int y){
+		if(x<0||x>7||y<0||y>7){
+	        //TODO Use Optional
+			return null;
+		}
+		return board[x][y];
+	}
+
 
     //Cell has a chess piece
-	class Cell{
+	public class Cell{
 		boolean occupied=Boolean.FALSE;
 		ChessPiece piece;
 		Cell(ChessPiece piece){
@@ -70,6 +78,13 @@ public class ChessBoard{
 			return occupied;
 		}
 
+		public boolean isCapturable(Side side){
+             if(piece.getSide()!=side)
+             	return true;
+             else
+             	return false;
+		}
+
 		@Override
 		public String toString(){
 			if(Optional.ofNullable(piece).isPresent())
@@ -84,7 +99,7 @@ public class ChessBoard{
 		StringBuffer boardBuffer = new StringBuffer();
 		for(int i=0;i<dimension;i++) {
 			for (int j = 0; j < dimension; j++) {
-				boardBuffer.append(board[i][j].toString()).append(" ");
+				boardBuffer.append(board[j][i].toString()).append(" ");
 			}
 			boardBuffer.append("\n");
 		}

@@ -3,6 +3,7 @@ package GameAnalyzer.chess.rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class King implements ChessPiece{
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getValidMovies(String an, Board board) {
+	public List<Pair<Integer, Integer>> getValidMovies(String an, ChessBoard board) {
 		// TODO Auto-generated method stub
 		return null;
 	}

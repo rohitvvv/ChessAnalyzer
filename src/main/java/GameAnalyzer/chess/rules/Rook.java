@@ -5,6 +5,7 @@ import java.util.List;
 
 import GameAnalyzer.Board;
 import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
@@ -43,7 +44,7 @@ public class Rook implements ChessPiece{
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getValidMovies(String an, Board board) {
+	public List<Pair<Integer, Integer>> getValidMovies(String an, ChessBoard board) {
 
 		return null;
 	}
