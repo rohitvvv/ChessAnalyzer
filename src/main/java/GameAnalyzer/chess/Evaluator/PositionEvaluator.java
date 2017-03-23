@@ -1,11 +1,15 @@
-package GameAnalyzer.chess.Evaluator;
+    package GameAnalyzer.chess.Evaluator;
 
 import GameAnalyzer.chess.ChessBoard;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.*;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import javafx.geometry.Pos;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -17,65 +21,76 @@ import java.util.Map;
  * This will be heavily used in Alpha Beta Pruning Algorithm
  */
 public class PositionEvaluator {
-    final int PAWN_WEIGHT = 1;
-    final int KNIGHT_WEIGHT = 3;
-    final int QUEEN_WEIGHT = 9;
-    final int ROOK_WEIGHT = 5;
-    final int KING_WEIGHT = 20;
-    final int BISHOP_WEIGHT = 3;
+    static final int PAWN_WEIGHT = 1;
+    static final int KNIGHT_WEIGHT = 3;
+    static final int QUEEN_WEIGHT = 9;
+    static final int ROOK_WEIGHT = 5;
+    static final int KING_WEIGHT = 200;
+    static final int BISHOP_WEIGHT = 3;
+
+    /**
+     * Evalue a given chess position
+     *
+     * @param board
+     * @return f(p) =  200(K-K')
+     * + 9(Q-Q')
+     * + 5(R-R')
+     * + 3(B-B' + N-N')
+     * + 1(P-P')
+     * - 0.5(D-D' + S-S' + I-I')
+     * + 0.1(M-M') + ...
+     * KQRBNP = number of kings, queens, rooks, bishops, knights and pawns
+     * D,S,I = doubled, blocked and isolated pawns
+     * M = Mobility (the number of legal moves)
+     */
+    public static Integer evaluate(ChessBoard board) {
+        Integer value;
+        Pair<HashMap<String, Integer>, HashMap<String, Integer>> pair;
+        pair = board.getPieceCount();
+        HashMap lightPieceCount = pair.getKey();
+        HashMap darkPieceCount = pair.getValue();
+        Iterator itr = lightPieceCount.keySet().iterator();
+
+        int K, Kd, N, Nd, R, Rd, B, Bd, P, Pd, Q, Qd;
+
+        K = (Integer) lightPieceCount.get(Constants.King);
+        Kd = (Integer) darkPieceCount.get(Constants.King);
+
+        N = (Integer) lightPieceCount.get(Constants.Knight);
+        Nd = (Integer) darkPieceCount.get(Constants.Knight);
+
+        B = (Integer) lightPieceCount.get(Constants.Bishop);
+        Bd = (Integer) darkPieceCount.get(Constants.Bishop);
+
+        P = (Integer) lightPieceCount.get(Constants.Pawn);
+        Pd = (Integer) darkPieceCount.get(Constants.Pawn);
+
+        R = (Integer) lightPieceCount.get(Constants.Rook);
+        Rd = (Integer) darkPieceCount.get(Constants.Rook);
+
+        Q = (Integer) lightPieceCount.get(Constants.Queen);
+        Qd = (Integer) darkPieceCount.get(Constants.Queen);
 
 
-    static Pair<Integer,Integer> evaluate(ChessBoard board){
-      HashMap<ChessPiece,Integer> map = new HashMap<>();
-      for(int i=0;i<7;i++){
-          for(int j=0;j<7;j++){
-                
-          }
-      }
+        value = KING_WEIGHT * (K - Kd) +
+                  QUEEN_WEIGHT * (Q - Qd) +
+                  ROOK_WEIGHT * (R - Rd) +
+                  BISHOP_WEIGHT * (B - Bd) +
+                  KNIGHT_WEIGHT * (K - Kd) +
+                  PAWN_WEIGHT * (P - Pd);
 
-
-      Pair<Integer,Integer> eval=null;
-
-
-      return eval;
-    };
+        return value;
+    }
 
     public static void main(String[] args) {
-        Map<ChessPiece,String> positions = new HashMap<>();
-        positions.put(new Pawn(Side.LIGHT),"a2");
-        positions.put(new Pawn(Side.LIGHT),"b2");
-        positions.put(new Pawn(Side.LIGHT),"c2");
-        positions.put(new Pawn(Side.LIGHT),"d2");
-        positions.put(new Pawn(Side.LIGHT),"e2");
-        positions.put(new Pawn(Side.LIGHT),"f2");
-        positions.put(new Pawn(Side.LIGHT),"g2");
-        positions.put(new Pawn(Side.LIGHT),"h2");
-        positions.put(new Rook(Side.LIGHT),"a1");
-        positions.put(new Rook(Side.LIGHT),"h1");
-        positions.put(new Knight(Side.LIGHT),"b1");
-        positions.put(new Knight(Side.LIGHT),"g1");
-        positions.put(new Bishop(Side.LIGHT),"c1");
-        positions.put(new Bishop(Side.LIGHT),"f1");
-        positions.put(new Queen(Side.LIGHT),"d1");
-        positions.put(new King(Side.LIGHT),"e1");
-
-        positions.put(new Pawn(Side.DARK),"a7");
-        positions.put(new Pawn(Side.DARK),"b7");
-        positions.put(new Pawn(Side.DARK),"c7");
-        positions.put(new Pawn(Side.DARK),"d7");
-        positions.put(new Pawn(Side.DARK),"e7");
-        positions.put(new Pawn(Side.DARK),"f7");
-        positions.put(new Pawn(Side.DARK),"g7");
-        positions.put(new Pawn(Side.DARK),"h7");
-        positions.put(new Rook(Side.DARK),"a8");
-        positions.put(new Rook(Side.DARK),"h8");
-        positions.put(new Knight(Side.DARK),"b8");
-        positions.put(new Knight(Side.DARK),"g8");
-        positions.put(new Bishop(Side.DARK),"c8");
-        positions.put(new Bishop(Side.DARK),"f8");
-        positions.put(new Queen(Side.DARK),"d8");
-        positions.put(new King(Side.DARK),"e8");
+        Map<ChessPiece, String> positions = new HashMap<>();
+        positions.put(new Pawn(Side.LIGHT), "a2");
+        positions.put(new King(Side.LIGHT), "b2");
+        positions.put(new Pawn(Side.DARK), "c2");
+        positions.put(new King(Side.DARK), "d2");
         ChessBoard board = new ChessBoard(positions);
-
+        int eval = PositionEvaluator.evaluate(board);
+        System.out.println(eval);
     }
+
 }

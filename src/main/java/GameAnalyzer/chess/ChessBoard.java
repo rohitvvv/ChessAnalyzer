@@ -1,9 +1,6 @@
 package GameAnalyzer.chess;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import GameAnalyzer.chess.rules.*;
 import javafx.util.Pair;
@@ -56,18 +53,23 @@ public class ChessBoard{
 
     //Cell has a chess piece
 	class Cell{
-		boolean occupied=Boolean.TRUE;
+		boolean occupied=Boolean.FALSE;
 		ChessPiece piece;
 		Cell(ChessPiece piece){
 			this.piece=piece;
 			Optional<ChessPiece> myPeice = Optional.ofNullable(piece);
 			if(myPeice.isPresent()){
-				occupied=Boolean.FALSE;
+				occupied=Boolean.TRUE;
 			}
 		}
 		ChessPiece getPeice(){
 			return piece;
 		}
+
+		public boolean isOccupied(){
+			return occupied;
+		}
+
 		@Override
 		public String toString(){
 			if(Optional.ofNullable(piece).isPresent())
@@ -91,24 +93,86 @@ public class ChessBoard{
 
 	/**
 	 * Useful for Position Evaluation
- 	 * @param side
-	 * @return
+ 	 * @param
+	 * @return Pair <LightPieceCount, DarkPieceCount>
 	 */
-	public HashMap<ChessPiece,Integer> getPieceCount(Side side){
-		HashMap<ChessPiece,Integer> pieceCount = new HashMap<>();
-
-		if(side==Side.LIGHT){
-			for(int i=0;i<8;i++){
-				for(int j=0;j<8;j++){
-					//switch (ChessPiece)
+	public Pair<HashMap<String, Integer>, HashMap<String, Integer>> getPieceCount(){
+		HashMap<String,Integer> lightPieceCount = new HashMap<>();
+		HashMap<String,Integer> darkPieceCount = new HashMap<>();
+        initialize(lightPieceCount);
+        initialize(darkPieceCount);
+		for(int i=0;i<8;i++) {
+			for (int j = 0; j < 8; j++) {
+				Cell cellObject = board[i][j];
+				if(cellObject.isOccupied()){
+					ChessPiece piece= cellObject.piece;
+  				    switch (cellObject.piece.toString()){
+						case "[Q]":  switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.Queen);
+							           break;
+							case LIGHT: updateCount(lightPieceCount,Constants.Queen);
+										break;
+						}
+						break;
+						case "[R]":  switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.Rook);
+										break;
+							case LIGHT:updateCount(lightPieceCount,Constants.Rook);
+										break;
+						}
+						break;
+						case "[N]": switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.Knight);
+										break;
+							case LIGHT: updateCount(lightPieceCount,Constants.Knight);
+										break;
+						}break;
+						case "[P]": switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.Pawn);
+										break;
+							case LIGHT: updateCount(lightPieceCount,Constants.Pawn);
+										break;
+						}break;
+						case "[B]": switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.Bishop);
+										break;
+							case LIGHT: updateCount(lightPieceCount,Constants.Bishop);
+										break;
+						}break;
+						case "[K]": switch (piece.getSide()){
+							case DARK: updateCount(darkPieceCount,Constants.King);
+								break;
+							case LIGHT: updateCount(lightPieceCount,Constants.King);
+								break;
+						}break;
+					}
 				}
 			}
 		}
-		//Dark
-		else {
+        return new Pair<>(lightPieceCount,darkPieceCount);
+	}
 
+    void updateCount(HashMap map,String chessPiece){
+		Object count = map.get(chessPiece);
+		if(count==null){
+			map.put(chessPiece,1);
 		}
-		return pieceCount;
+		else{
+			map.put(chessPiece,((Integer)count)+1);
+		}
+	}
+
+	/**
+	 * Initialize all map enteries to zero
+	 * @param map
+	 */
+	void initialize(HashMap map){
+       map.put(Constants.Knight,0);
+       map.put(Constants.Bishop,0);
+       map.put(Constants.Pawn,0);
+       map.put(Constants.Queen,0);
+       map.put(Constants.Rook,0);
+       map.put(Constants.King,0);
 	}
 
 }

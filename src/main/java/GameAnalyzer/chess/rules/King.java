@@ -3,6 +3,7 @@ package GameAnalyzer.chess.rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +58,13 @@ public class King implements ChessPiece{
 	}
 
 	@Override
+	public Side getSide() {
+		return side;
+	}
+
+	@Override
 	public String toString(){
-    	return "[K]";
+    	return Constants.King;
 	}
 
 }

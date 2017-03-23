@@ -4,6 +4,7 @@ import java.util.List;
 
 import GameAnalyzer.Board;
 
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
@@ -31,9 +32,15 @@ public class Bishop implements ChessPiece{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Side getSide() {
+		return side;
+	}
+
 	@Override
 	public String toString(){
-		return "[B]";
+		return Constants.Bishop;
 	}
 
 }

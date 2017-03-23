@@ -5,6 +5,7 @@ import java.util.List;
 
 import GameAnalyzer.Board;
 import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
@@ -93,14 +94,19 @@ public class Pawn implements ChessPiece{
 	public void setTaken() {
 		available=Boolean.TRUE;
 	}
-	
+
+	@Override
+	public Side getSide() {
+		return side;
+	}
+
 	public void setDouble(){
 		longMove=Boolean.TRUE;
 	}
 
 	@Override
 	public String toString(){
-		return "[P]";
+		return Constants.Pawn;
 	}
 
 }

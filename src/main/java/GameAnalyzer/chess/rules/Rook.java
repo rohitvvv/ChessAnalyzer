@@ -5,6 +5,7 @@ import java.util.List;
 
 import GameAnalyzer.Board;
 import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
@@ -53,8 +54,13 @@ public class Rook implements ChessPiece{
 	}
 
 	@Override
+	public Side getSide() {
+		return side;
+	}
+
+	@Override
 	public String toString(){
-		return "[R]";
+		return Constants.Rook;
 	}
 	
 }
