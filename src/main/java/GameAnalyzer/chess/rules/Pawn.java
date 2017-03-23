@@ -1,10 +1,10 @@
 package GameAnalyzer.chess.rules;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import GameAnalyzer.Board;
 import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
@@ -26,7 +26,7 @@ public class Pawn implements ChessPiece{
 
     public Pawn(Side side){
     	available= Boolean.TRUE;
-    	longMove = Boolean.FALSE;
+    	longMove = Boolean.TRUE;
     	this.side=side;
       	list=new ArrayList<>();
     }
@@ -60,8 +60,8 @@ public class Pawn implements ChessPiece{
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 	    int x,y,i=0;
 	    Pair<Integer,Integer> position = ANConvertor.getPosition(an);
-	    y=position.getKey();
-	    x=position.getValue();
+	    x=position.getKey();
+	    y=position.getValue();
 	    if(side==side.LIGHT){
 	    	  while(i<validLightPawnPositions.length-4){
 	              list.add(new Pair<Integer,Integer>(x+validLightPawnPositions[i],
@@ -81,13 +81,63 @@ public class Pawn implements ChessPiece{
 
 	/**
 	 * Returns a list of valid moves for a given chess piece with a board configuration
-	 * The piece may be blocked
-	 * En passant capture
-	 * Promotion of peiece
+	 * Blocked peices
+	 * Capture moves
+	 * TODO En passant capture
+	 * TODO Promotion of piece
 	 */
-	@Override
-	public List<Pair<Integer, Integer>> getValidMovies(String an, Board board) {
-		return null;
+	public List<Pair<Integer, Integer>> getValidMovies(String an, ChessBoard board) {
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+		ChessBoard cboard = (ChessBoard)board;
+		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
+		int x = position.getKey();
+		int y = position.getValue();
+		ChessBoard.Cell square ;
+		if(side==Side.LIGHT){
+            //1. If piece is blocked.
+ 			square = cboard.getPiece(x,y-1);
+			if(square!=null&&!square.isOccupied()){
+              	moveList.add(new Pair<>(x,y-1));
+			}
+			//2. If piece is available for capture
+            square = cboard.getPiece(x-1,y-1);
+			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.LIGHT)){
+				moveList.add(new Pair<>(x-1,y-1));
+			}
+			square = cboard.getPiece(x+1,y-1);
+			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.LIGHT)){
+				moveList.add(new Pair<>(x+1,y-1));
+			}
+			//3. Double move
+			square = cboard.getPiece(x,y-2);
+			if(square!=null&&!square.isOccupied()&&longMove==Boolean.TRUE){
+				moveList.add(new Pair<>(x,y-2));
+			}
+		}
+		else{ //Dark Piece
+        	//1. If piece is blocked
+			square = cboard.getPiece(x,y-1);
+			if(!square.isOccupied()){
+				if(y+1<=7){
+					moveList.add(new Pair<>(x,y+1));
+				}
+			}
+			//2. If piece is available for capture
+			square = cboard.getPiece(x+1,y+1);
+			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.DARK)){
+				moveList.add(new Pair<>(x+1,y+1));
+			}
+			square = cboard.getPiece(x-1,y+1);
+			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.DARK)){
+				moveList.add(new Pair<>(x-1,y+1));
+			}
+			//3. Double move
+			square = cboard.getPiece(x,y+2);
+			if(square!=null&&!square.isOccupied()&&longMove==Boolean.TRUE){
+				moveList.add(new Pair<>(x,y+2));
+			}
+		}
+		return moveList;
 	}
 	
 	@Override
@@ -100,8 +150,8 @@ public class Pawn implements ChessPiece{
 		return side;
 	}
 
-	public void setDouble(){
-		longMove=Boolean.TRUE;
+	public void disableLongPawnMove(){
+		longMove=Boolean.FALSE;
 	}
 
 	@Override
@@ -109,4 +159,16 @@ public class Pawn implements ChessPiece{
 		return Constants.Pawn;
 	}
 
+//	public static void main(String[] args) {
+//		Map<ChessPiece, String> positions = new HashMap<>();
+//		Pawn b2Pawn = new Pawn(Side.LIGHT);
+//		positions.put(b2Pawn, "b2");
+//		positions.put(new Pawn(Side.DARK), "c3");
+//		positions.put(new Pawn(Side.DARK), "a3");
+//		ChessBoard board = new ChessBoard(positions);
+//        List<Pair<Integer,Integer>> moves = b2Pawn.getValidMovies("b2",board);
+//        Iterator itr =moves.iterator();
+//        while(itr.hasNext())
+//			System.out.println(itr.next());
+//	}
 }
