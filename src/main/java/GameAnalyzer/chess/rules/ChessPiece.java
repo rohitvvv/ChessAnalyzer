@@ -2,6 +2,7 @@ package GameAnalyzer.chess.rules;
 import java.util.List;
 
 import GameAnalyzer.Board;
+import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
 public interface ChessPiece {
@@ -21,4 +22,7 @@ public interface ChessPiece {
 	 * Set the piece is taken from the board
 	 */
 	void setTaken();
+
+	Side getSide();
+
 }

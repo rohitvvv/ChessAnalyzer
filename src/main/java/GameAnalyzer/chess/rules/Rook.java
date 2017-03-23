@@ -1,28 +1,66 @@
 package GameAnalyzer.chess.rules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import GameAnalyzer.Board;
+import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.Constants;
+import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
-class Rook implements ChessPiece{
+public class Rook implements ChessPiece{
+	List<Pair<Integer,Integer>> list = null;
+	int range=8;
+	Side side;
 
+	public  Rook(Side side){
+		this.side=side;
+		list=new ArrayList<>();
+	}
+
+	/**
+	 * A rook can move either vertically up and down any number or positions
+	 * or horizontally left and right any number of positions
+	 * @param an
+	 * @return
+	 */
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
-		// TODO Auto-generated method stub
-		return null;
+		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
+		int rank = position.getKey();
+		int file = position.getValue();
+
+		for(int i=0;i<range;i++) {
+			if (i != rank) {
+				list.add(new Pair<Integer, Integer>(rank, i));
+			}
+		    if (i!=file){
+				list.add(new Pair<Integer,Integer>(file,i));
+			}
+		}
+     	return list;
 	}
 
 	@Override
 	public List<Pair<Integer, Integer>> getValidMovies(String an, Board board) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public void setTaken() {
-		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public Side getSide() {
+		return side;
+	}
+
+	@Override
+	public String toString(){
+		return Constants.Rook;
 	}
 	
 }

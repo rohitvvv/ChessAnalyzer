@@ -2,6 +2,7 @@ package GameAnalyzer;
 
 import java.util.List;
 
+import GameAnalyzer.chess.Side;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +11,7 @@ import javafx.util.Pair;
 public class KingTest {
 	@Test 
 	public void testKingPositions(){
-		King king = new King();  
+		King king = new King(Side.LIGHT);
 	    List<Pair<Integer,Integer>> positions = king.getValidMoves("Kb7");
 	    assertAll("King positions",
 	    		()->assertEquals(positions.get(0),new Pair<Integer,Integer>(0,0)),

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GameAnalyzer.Board;
+import GameAnalyzer.chess.ANConvertor;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
 import javafx.util.Pair;
 
@@ -16,22 +18,65 @@ import javafx.util.Pair;
  */
 public class Pawn implements ChessPiece{
     boolean available;
+    List<Pair<Integer,Integer>> list = null;
+    
+    //Indicates a two position move of a pawn
+    boolean longMove;
     Side side;
+
+    public Pawn(Side side){
+    	available= Boolean.TRUE;
+    	longMove = Boolean.FALSE;
+    	this.side=side;
+      	list=new ArrayList<>();
+    }
+    //Encode Pawn Moves
+    //Includes capture moves as
+    int []validLightPawnPositions = {
+		0,-1,
+		0,-2,
+	   -1,-1,//Capture move
+		1,-1 //Capture move
+    };
+    int []validDarkPawnPositions = {
+		0,1,
+		0,2,
+	   -1,1, //Capture move
+		1,1  //Capture move
+	};
+   
     Pawn(String an,Side side){
         available = Boolean.FALSE;
         this.side = side;
 	}
-	
+
+	/**
+	 * Returns a list of valid moves on the board
+	 * @param an
+	 * @return
+	 */
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+	    int x,y,i=0;
+	    Pair<Integer,Integer> position = ANConvertor.getPosition(an);
+	    y=position.getKey();
+	    x=position.getValue();
 	    if(side==side.LIGHT){
-	      
+	    	  while(i<validLightPawnPositions.length-4){
+	              list.add(new Pair<Integer,Integer>(x+validLightPawnPositions[i],
+	           		                              y+validLightPawnPositions[++i]));
+	              i++;
+	           }
 	    }
 	    else{
-	    	
+	    	 while(i<validDarkPawnPositions.length-4){
+	              list.add(new Pair<Integer,Integer>(x+validDarkPawnPositions[i],
+	           		                              y+validDarkPawnPositions[++i]));
+	              i++;
+	         }
 	    }
-	 	return null;
+	 	return list;
 	}
 
 	/**
@@ -49,4 +94,19 @@ public class Pawn implements ChessPiece{
 	public void setTaken() {
 		available=Boolean.TRUE;
 	}
+
+	@Override
+	public Side getSide() {
+		return side;
+	}
+
+	public void setDouble(){
+		longMove=Boolean.TRUE;
+	}
+
+	@Override
+	public String toString(){
+		return Constants.Pawn;
+	}
+
 }
