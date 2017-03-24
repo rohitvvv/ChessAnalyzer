@@ -70,7 +70,7 @@ public class ChessBoard{
 				occupied=Boolean.TRUE;
 			}
 		}
-		ChessPiece getPeice(){
+		public ChessPiece getPeice(){
 			return piece;
 		}
 
