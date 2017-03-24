@@ -15,6 +15,14 @@ public class ChessBoard{
 	int dimension=8;
 
 	/**
+	 * Copy Constructor
+	 * @param board
+	 */
+	public ChessBoard(ChessBoard board){
+		this.board=board.board;
+	}
+
+	/**
 	 * Initialize the board
 	 * @param positions is a mapping for chess piece to position on board
 	 */
@@ -58,6 +66,42 @@ public class ChessBoard{
 		return board[x][y];
 	}
 
+	/**
+	 * This method sets a piece on the board and resets the previous position of the chess piece
+	 * @param x
+	 * @param y
+	 * @param piece
+	 * @return
+	 */
+	public boolean setPiece(int x,int y,ChessPiece piece){
+		if(x<0||x>7||y<0||y>7){
+			//TODO Use Optional
+			return false;
+		}else if(piece==null){
+			//Remove the piece;
+			board[x][y]=null;
+			return true;
+		}
+		else{
+			Cell cell = new Cell(piece);
+        	board[x][y]=cell;
+			return true;
+		}
+	}
+
+	ChessPiece findAndErasePreviousPiecePosition(ChessPiece piece){
+		if(piece instanceof Pawn){
+//             Pawn pawn=(Pawn)piece;
+//             Pair<Integer,Integer> position = pawn.getPosition();
+//             int x,y;
+//             x = position.getKey();
+//             y = position.getValue();
+//			 switch (piece.getSide()){
+//				 case DARK: if(board[y--])
+//			}
+		}
+		return null;
+	}
 
     //Cell has a chess piece
 	public class Cell{
@@ -87,12 +131,12 @@ public class ChessBoard{
 
 		@Override
 		public String toString(){
-			if(Optional.ofNullable(piece).isPresent())
-			  return piece.toString();
-			else
-			  return "[ ]";
-		}
+		if(Optional.ofNullable(piece).isPresent())
+			return piece.toString();
+		else
+			return "[ ]";
 	}
+}
 
 	@Override
 	public String toString(){
@@ -189,5 +233,4 @@ public class ChessBoard{
        map.put(Constants.Rook,0);
        map.put(Constants.King,0);
 	}
-
 }

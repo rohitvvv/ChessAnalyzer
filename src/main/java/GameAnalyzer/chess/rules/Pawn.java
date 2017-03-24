@@ -19,7 +19,7 @@ import javafx.util.Pair;
 public class Pawn implements ChessPiece{
     boolean available;
     List<Pair<Integer,Integer>> list = null;
-    
+    Pair<Integer,Integer> position = null;
     //Indicates a two position move of a pawn
     boolean longMove;
     Side side;
@@ -29,8 +29,18 @@ public class Pawn implements ChessPiece{
     	longMove = Boolean.TRUE;
     	this.side=side;
       	list=new ArrayList<>();
+      	this.position=position;
     }
-    //Encode Pawn Moves
+
+	public void setPosition(Pair<Integer, Integer> position) {
+		this.position = position;
+	}
+
+	public Pair<Integer,Integer> getPosition(){
+    	return position;
+	}
+
+	//Encode Pawn Moves
     //Includes capture moves as
     int []validLightPawnPositions = {
 		0,-1,
@@ -48,6 +58,7 @@ public class Pawn implements ChessPiece{
     Pawn(String an,Side side){
         available = Boolean.FALSE;
         this.side = side;
+        this.position = ANConvertor.getPosition(an);
 	}
 
 	/**
@@ -56,27 +67,41 @@ public class Pawn implements ChessPiece{
 	 * @return
 	 */
 	@Override
+
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
 	    List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 	    int x,y,i=0;
 	    Pair<Integer,Integer> position = ANConvertor.getPosition(an);
 	    x=position.getKey();
 	    y=position.getValue();
-	    if(side==side.LIGHT){
-	    	  while(i<validLightPawnPositions.length-4){
-	              list.add(new Pair<Integer,Integer>(x+validLightPawnPositions[i],
-	           		                              y+validLightPawnPositions[++i]));
-	              i++;
-	           }
-	    }
-	    else{
-	    	 while(i<validDarkPawnPositions.length-4){
-	              list.add(new Pair<Integer,Integer>(x+validDarkPawnPositions[i],
-	           		                              y+validDarkPawnPositions[++i]));
-	              i++;
-	         }
-	    }
-	 	return list;
+		moveList = getValidMoves(x,y);
+	    return moveList;
+	}
+
+	/**
+	 * Given x,y position on the board. Get the valid moves
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public List<Pair<Integer, Integer>> getValidMoves(int x,int y) {
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+		int i=0;
+		if(side==side.LIGHT){
+			while(i<validLightPawnPositions.length-4){
+				list.add(new Pair<Integer,Integer>(x+validLightPawnPositions[i],
+						y+validLightPawnPositions[++i]));
+				i++;
+			}
+		}
+		else{
+			while(i<validDarkPawnPositions.length-4){
+				list.add(new Pair<Integer,Integer>(x+validDarkPawnPositions[i],
+						y+validDarkPawnPositions[++i]));
+				i++;
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -158,5 +183,8 @@ public class Pawn implements ChessPiece{
 	public String toString(){
 		return Constants.Pawn;
 	}
+
+
+
 
 }

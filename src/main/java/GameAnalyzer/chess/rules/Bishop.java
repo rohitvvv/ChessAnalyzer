@@ -11,6 +11,7 @@ import javafx.util.Pair;
 
 public class Bishop implements ChessPiece{
     Side side;
+    //Pair<Integer,Integer> position;
 
     public Bishop(Side side){
     	this.side=side;
