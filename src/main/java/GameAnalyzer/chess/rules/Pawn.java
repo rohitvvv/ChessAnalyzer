@@ -159,16 +159,4 @@ public class Pawn implements ChessPiece{
 		return Constants.Pawn;
 	}
 
-//	public static void main(String[] args) {
-//		Map<ChessPiece, String> positions = new HashMap<>();
-//		Pawn b2Pawn = new Pawn(Side.LIGHT);
-//		positions.put(b2Pawn, "b2");
-//		positions.put(new Pawn(Side.DARK), "c3");
-//		positions.put(new Pawn(Side.DARK), "a3");
-//		ChessBoard board = new ChessBoard(positions);
-//        List<Pair<Integer,Integer>> moves = b2Pawn.getValidMovies("b2",board);
-//        Iterator itr =moves.iterator();
-//        while(itr.hasNext())
-//			System.out.println(itr.next());
-//	}
 }
