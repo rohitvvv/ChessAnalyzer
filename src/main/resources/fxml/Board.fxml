@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameAnalyzer.ui.AppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameAnalyzer.ui.AppController">
    <center>
       <GridPane fx:id="chessBoard" alignment="CENTER" gridLinesVisible="true">
         <columnConstraints>
@@ -45,6 +45,7 @@
             <items>
               <MenuItem mnemonicParsing="false" text="Open" />
                   <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="loadGame" mnemonicParsing="false" onAction="#onLoadGameClicked" text="Load Game" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">

@@ -12,6 +12,32 @@ import java.util.Map;
  */
 public class ChessBoardFactory {
 
+    /**
+     * Construct Board Configurations depending on the length of the game
+     * @return
+     */
+    public static ChessBoard[] getChessBoardFromPGN(String pgn){
+      String []moves = pgn.split(" ");
+      for(int i=0;i<moves.length;i++){
+          int index = moves[i].indexOf('.');
+          if(index>0)
+              moves[i]=moves[i].substring(index+1);
+      }
+
+//      for(String move:moves){
+//          System.out.println(move);
+//      }
+
+      ChessBoard[] boards = new ChessBoard[moves.length];
+      boards[0]=getChessBoard();
+
+      return boards;
+    };
+
+    /**
+     * Initial configuratin of the board
+     * @return
+     */
     public static ChessBoard getChessBoard(){
         Map<ChessPiece, String> positions = new HashMap<>();
         positions.put(new Pawn(Side.LIGHT), "a2");

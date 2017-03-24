@@ -15,6 +15,14 @@ public class ChessBoard{
 	int dimension=8;
 
 	/**
+	 * Copy Constructor
+	 * @param board
+	 */
+	public ChessBoard(ChessBoard board){
+		this.board=board.board;
+	}
+
+	/**
 	 * Initialize the board
 	 * @param positions is a mapping for chess piece to position on board
 	 */
@@ -189,5 +197,4 @@ public class ChessBoard{
        map.put(Constants.Rook,0);
        map.put(Constants.King,0);
 	}
-
 }
