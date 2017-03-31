@@ -82,15 +82,4 @@ public class PositionEvaluator {
         return value;
     }
 
-    public static void main(String[] args) {
-        Map<ChessPiece, String> positions = new HashMap<>();
-        positions.put(new Pawn(Side.LIGHT), "a2");
-        positions.put(new King(Side.LIGHT), "b2");
-        positions.put(new Pawn(Side.DARK), "c2");
-        positions.put(new King(Side.DARK), "d2");
-        ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
-        System.out.println(eval);
-    }
-
 }

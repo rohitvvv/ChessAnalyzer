@@ -45,8 +45,9 @@ import javafx.util.Pair;
          }
          Integer file = File.getOridinal(strippedNotation.charAt(0));
          Integer rank = Character.getNumericValue(strippedNotation.charAt(1));
-         Pair<Integer,Integer> pair = new Pair<Integer,Integer>(8-rank,file);
-         return pair;
+         //Pair<Integer,Integer> pair = new Pair<Integer,Integer>(8-rank,file);
+		 Pair<Integer,Integer> pair = new Pair<Integer,Integer>(file,8-rank);
+		 return pair;
      }
   }
  		

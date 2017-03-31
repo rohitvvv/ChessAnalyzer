@@ -15,6 +15,14 @@ public class ChessBoard{
 	int dimension=8;
 
 	/**
+	 * Copy Constructor
+	 * @param board
+	 */
+	public ChessBoard(ChessBoard board){
+		this.board=board.board;
+	}
+
+	/**
 	 * Initialize the board
 	 * @param positions is a mapping for chess piece to position on board
 	 */
@@ -50,9 +58,99 @@ public class ChessBoard{
         }
 	}
 
+	public Cell getPiece(int x,int y){
+		if(x<0||x>7||y<0||y>7){
+	        //TODO Use Optional
+			return null;
+		}
+		return board[x][y];
+	}
+
+	/**
+	 * This method sets a piece on the board and resets the previous position of the chess piece
+	 * Follow the following strategy
+	 * 1. Find the chess piece that can move to target position.
+	 * 2. Reset the position of the piece
+	 * 3. Allocate the same piece to the new position.
+	 * @param x
+	 * @param y
+	 * @param piece
+	 * @return
+	 */
+	public boolean setPiece(int x,int y,ChessPiece piece){
+		if(x<0||x>7||y<0||y>7){
+			//TODO Use Optional
+			return false;
+		}else if(piece==null){
+			//Remove the piece;
+			board[x][y]=null;
+			return true;
+		}
+		else{
+//			Cell cell = new Cell(piece);
+//        	board[x][y]=cell;
+			return true;
+		}
+	}
+
+//	private boolean isMoveInList(List<Pair<Integer,Integer>> movelist, Pair<Integer,Integer> move){
+//        Pair<Integer,Integer> currMove =null;
+//		Iterator itr = movelist.iterator();
+//		while(itr.hasNext()){
+//			currMove = (Pair<Integer,Integer>)itr.next();
+//			if(currMove.equals(move))
+//				return true;
+//		}
+//	   return false;
+//	}
+
+//	 Pair<Integer,Integer> findPreviousPiecePosition(ChessPiece piece){
+//        Pair<Integer,Integer> currPosition = null;
+//        int x,y;
+//		List<Pair<Integer, Integer>> moveList = null;
+//		if(piece instanceof Pawn){
+//			switch (piece.getSide()){
+//				case DARK:
+//					       currPosition = ((Pawn) piece).getPosition();
+//					       x = currPosition.getKey();
+//					       y = currPosition.getValue();
+//					       if(board[x][y-2]!=null) {
+//							   moveList = ((Pawn) piece).getValidMoves(x, y - 2);
+//							   if (isMoveInList(moveList, currPosition)) {
+//								   return new Pair<>(x,y-2);
+//							   }
+//						   }
+//				           if(board[x][y-1]!=null){
+//							   moveList = ((Pawn) piece).getValidMoves(x, y - 1);
+//							   if (isMoveInList(moveList, currPosition)) {
+//								   return new Pair<>(x,y-1);
+//							   }
+//						   }
+//					       break;
+//				case LIGHT:
+//							currPosition = ((Pawn) piece).getPosition();
+//							x = currPosition.getKey();
+//							y = currPosition.getValue();
+//							if(board[x][y+2]!=null) {
+//								moveList = ((Pawn) piece).getValidMoves(x, y + 2);
+//								if (isMoveInList(moveList, currPosition)) {
+//									return new Pair<>(x,y+2);
+//								}
+//							}
+//							if(board[x][y+1]!=null){
+//								moveList = ((Pawn) piece).getValidMoves(x, y + 1);
+//								if (isMoveInList(moveList, currPosition)) {
+//									return new Pair<>(x,y+1);
+//								}
+//							}
+//							break;
+// 			}
+//		}
+//		return null;
+//	}
 
     //Cell has a chess piece
-	class Cell{
+	public class Cell{
 		boolean occupied=Boolean.FALSE;
 		ChessPiece piece;
 		Cell(ChessPiece piece){
@@ -62,7 +160,7 @@ public class ChessBoard{
 				occupied=Boolean.TRUE;
 			}
 		}
-		ChessPiece getPeice(){
+		public ChessPiece getPeice(){
 			return piece;
 		}
 
@@ -70,21 +168,28 @@ public class ChessBoard{
 			return occupied;
 		}
 
+		public boolean isCapturable(Side side){
+             if(piece.getSide()!=side)
+             	return true;
+             else
+             	return false;
+		}
+
 		@Override
 		public String toString(){
-			if(Optional.ofNullable(piece).isPresent())
-			  return piece.toString();
-			else
-			  return "[ ]";
-		}
+		if(Optional.ofNullable(piece).isPresent())
+			return piece.toString();
+		else
+			return "[ ]";
 	}
+}
 
 	@Override
 	public String toString(){
 		StringBuffer boardBuffer = new StringBuffer();
 		for(int i=0;i<dimension;i++) {
 			for (int j = 0; j < dimension; j++) {
-				boardBuffer.append(board[i][j].toString()).append(" ");
+				boardBuffer.append(board[j][i].toString()).append(" ");
 			}
 			boardBuffer.append("\n");
 		}
@@ -174,5 +279,4 @@ public class ChessBoard{
        map.put(Constants.Rook,0);
        map.put(Constants.King,0);
 	}
-
 }
