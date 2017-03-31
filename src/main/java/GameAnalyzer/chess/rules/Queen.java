@@ -1,8 +1,10 @@
 package GameAnalyzer.chess.rules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import GameAnalyzer.Board;
+import GameAnalyzer.chess.ANConvertor;
 import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Side;
@@ -17,20 +19,27 @@ public class Queen implements ChessPiece {
 
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Pair<Integer,Integer>> moveList;
+		int x,y,i=0;
+		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
+		x=position.getKey();
+		y=position.getValue();
+		moveList = new Bishop(side).getValidMoves(x,y);
+		moveList.addAll(new Rook(side).getValidMoves(x,y));
+		return moveList;
 	}
 
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an, ChessBoard board) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+	    moveList = new Bishop(side).getValidMoves(an,board);
+	    moveList.addAll(new Rook(side).getValidMoves(an,board));
+        return moveList;
 	}
 
 	@Override
 	public void setTaken() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
