@@ -4,12 +4,12 @@ import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.Bishop;
 import GameAnalyzer.chess.rules.ChessPiece;
+import GameAnalyzer.chess.rules.Knight;
 import GameAnalyzer.chess.rules.Pawn;
 import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,10 +45,10 @@ public class BishopTest {
         Map<ChessPiece, String> piecePositions = new HashMap<>();
         Bishop bishop = new Bishop(Side.LIGHT);
         piecePositions.put(bishop, "d4");
-        piecePositions.put(new Pawn(Side.DARK), "b2");
-        piecePositions.put(new Pawn(Side.DARK), "b6");
-        piecePositions.put(new Pawn(Side.DARK), "e5");
-        piecePositions.put(new Pawn(Side.DARK), "g1");
+        piecePositions.put(new Pawn(Side.LIGHT), "b2");
+        piecePositions.put(new Pawn(Side.LIGHT), "b6");
+        piecePositions.put(new Pawn(Side.LIGHT), "e5");
+        piecePositions.put(new Pawn(Side.LIGHT), "g1");
         ChessBoard board = new ChessBoard(piecePositions);
 
         List<Pair<Integer,Integer>> validBishopMoves = bishop.getValidMoves("d4",board);
@@ -64,14 +64,24 @@ public class BishopTest {
         Bishop bishop1 = new Bishop(Side.LIGHT);
         piecePositions.put(bishop, "c1");
         List<Pair<Integer,Integer>> moves1 = bishop.getValidMoves("c1");
-        piecePositions.put(new Pawn(Side.DARK), "b2");
-        piecePositions.put(new Pawn(Side.DARK), "c2");
-        piecePositions.put(new Pawn(Side.DARK), "d2");
+        piecePositions.put(new Pawn(Side.LIGHT), "b2");
+        piecePositions.put(new Pawn(Side.LIGHT), "c2");
+        piecePositions.put(new Pawn(Side.LIGHT), "d2");
         ChessBoard board1 = new ChessBoard(piecePositions);
 
         List<Pair<Integer,Integer>> validBishopMoves1 = bishop.getValidMoves("c1",board1);
 
         assertTrue(validBishopMoves1.size()==0);
+
+
+        //Bishop is blocked and only valid move is to capture
+        Map<ChessPiece, String> piecePositions3 = new HashMap<>();
+        Bishop bishop3 = new Bishop(Side.LIGHT);
+        piecePositions3.put(bishop3, "h1");
+        piecePositions3.put(new Knight(Side.DARK), "g2");
+        ChessBoard board3 = new ChessBoard(piecePositions3);
+        List<Pair<Integer,Integer>> validBishopMoves3 = bishop.getValidMoves("h1",board3);
+        assertTrue(validBishopMoves3.size()==1);
 
     }
 }

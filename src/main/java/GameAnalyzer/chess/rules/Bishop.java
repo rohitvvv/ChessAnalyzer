@@ -66,20 +66,29 @@ public class Bishop implements ChessPiece{
 	    int y = position.getValue();
 		int xd,yd;
 		xd=x;yd=y;  //Reset
-		while(RulesUtils.inBounds(--xd,--yd) && !board.getPiece(xd,yd).isOccupied()){
+
+		while(RulesUtils.inBounds(--xd,--yd) && (!board.getPiece(xd,yd).isOccupied() || board.getPiece(xd,yd).isCapturable(side))){
 			moveList.add(new Pair<>(xd,yd));
+			if(board.getPiece(xd,yd).isOccupied() && board.getPiece(xd,yd).isCapturable(side))
+				break;
 		}
 		xd=x;yd=y; //Reset
-		while(RulesUtils.inBounds(--xd,++yd) && !board.getPiece(xd,yd).isOccupied()){
+		while(RulesUtils.inBounds(--xd,++yd) && (!board.getPiece(xd,yd).isOccupied() || board.getPiece(xd,yd).isCapturable(side))){
 			moveList.add(new Pair<>(xd,yd));
+			if(board.getPiece(xd,yd).isOccupied() && board.getPiece(xd,yd).isCapturable(side))
+				break;
 		}
 		xd=x;yd=y; //Reset
-		while(RulesUtils.inBounds(++xd,--yd) && !board.getPiece(xd,yd).isOccupied()){
+		while(RulesUtils.inBounds(++xd,--yd) && (!board.getPiece(xd,yd).isOccupied() || board.getPiece(xd,yd).isCapturable(side))){
 			moveList.add(new Pair<>(xd,yd));
+			if(board.getPiece(xd,yd).isOccupied() && board.getPiece(xd,yd).isCapturable(side))
+				break;
 		}
 		xd=x;yd=y; //Reset
-		while(RulesUtils.inBounds(++xd,++yd) && !board.getPiece(xd,yd).isOccupied()){
+		while(RulesUtils.inBounds(++xd,++yd) && (!board.getPiece(xd,yd).isOccupied() || board.getPiece(xd,yd).isCapturable(side))){
 			moveList.add(new Pair<>(xd,yd));
+			if(board.getPiece(xd,yd).isOccupied() && board.getPiece(xd,yd).isCapturable(side))
+				break;
 		}
 		return moveList;
 	}
