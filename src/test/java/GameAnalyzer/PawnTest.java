@@ -24,8 +24,6 @@ public class PawnTest {
 		assertAll("Pawn positions",
 				() -> assertEquals(positions.get(0), new Pair<Integer, Integer>(1, 5)),
 				() -> assertEquals(positions.get(1), new Pair<Integer, Integer>(1, 4)));
-
-
 	}
 
 	@Test
@@ -36,7 +34,7 @@ public class PawnTest {
 		positions.put(new Pawn(Side.DARK), "c3");
 		positions.put(new Pawn(Side.DARK), "a3");
 		ChessBoard board = new ChessBoard(positions);
-		List<Pair<Integer, Integer>> moves = b2Pawn.getValidMovies("b2", board);
+		List<Pair<Integer, Integer>> moves = b2Pawn.getValidMoves("b2", board);
 		assertAll("Valid Pawn Postions",
 				() -> assertEquals(moves.get(0), new Pair<>(1, 5)),
 				() -> assertEquals(moves.get(1), new Pair<>(0, 5)),

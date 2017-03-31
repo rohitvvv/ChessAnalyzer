@@ -21,7 +21,7 @@ public class Knight implements ChessPiece{
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getValidMovies(String an, ChessBoard board) {
+	public List<Pair<Integer, Integer>> getValidMoves(String an, ChessBoard board) {
 		// TODO Auto-generated method stub
 		return null;
 	}

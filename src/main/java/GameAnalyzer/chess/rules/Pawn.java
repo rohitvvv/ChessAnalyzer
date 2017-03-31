@@ -113,7 +113,8 @@ public class Pawn implements ChessPiece{
 	 * TODO En passant capture
 	 * TODO Promotion of piece
 	 */
-	public List<Pair<Integer, Integer>> getValidMovies(String an, ChessBoard board) {
+	@Override
+	public List<Pair<Integer, Integer>> getValidMoves(String an, ChessBoard board) {
 		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 		ChessBoard cboard = (ChessBoard)board;
 		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
