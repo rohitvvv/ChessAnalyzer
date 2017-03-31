@@ -20,14 +20,11 @@ public class Pawn implements ChessPiece{
     boolean available;
     List<Pair<Integer,Integer>> list = null;
     Pair<Integer,Integer> position = null;
-    //Indicates a two position move of a pawn
-    boolean longMove;
     Side side;
     public String agn = null;
 
     public Pawn(Side side){
     	available= Boolean.TRUE;
-    	longMove = Boolean.TRUE;
     	this.side=side;
       	list=new ArrayList<>();
       	this.position=position;
@@ -122,46 +119,44 @@ public class Pawn implements ChessPiece{
 		int y = position.getValue();
 		ChessBoard.Cell square ;
 		if(side==Side.LIGHT){
-            //1. If piece is blocked.
+            //1. If piece is not blocked.
  			square = cboard.getPiece(x,y-1);
-			if(square!=null&&!square.isOccupied()){
+			if(square!=null && !square.isOccupied()){
               	moveList.add(new Pair<>(x,y-1));
-			}
+    		}
 			//2. If piece is available for capture
             square = cboard.getPiece(x-1,y-1);
-			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.LIGHT)){
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.LIGHT)){
 				moveList.add(new Pair<>(x-1,y-1));
 			}
 			square = cboard.getPiece(x+1,y-1);
-			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.LIGHT)){
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.LIGHT)){
 				moveList.add(new Pair<>(x+1,y-1));
 			}
-			//3. Double move
+			//3. Double move only if its not blocked
 			square = cboard.getPiece(x,y-2);
-			if(square!=null&&!square.isOccupied()&&longMove==Boolean.TRUE){
+			if(square!=null && !cboard.getPiece(x,y-1).isOccupied() && !square.isOccupied() && y==6){
 				moveList.add(new Pair<>(x,y-2));
 			}
 		}
 		else{ //Dark Piece
-        	//1. If piece is blocked
-			square = cboard.getPiece(x,y-1);
-			if(!square.isOccupied()){
-				if(y+1<=7){
-					moveList.add(new Pair<>(x,y+1));
-				}
+        	//1. If piece is not blocked
+			square = cboard.getPiece(x,y+1);
+			if(square!=null && !square.isOccupied()){
+				moveList.add(new Pair<>(x,y+1));
 			}
 			//2. If piece is available for capture
 			square = cboard.getPiece(x+1,y+1);
-			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.DARK)){
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.DARK)){
 				moveList.add(new Pair<>(x+1,y+1));
 			}
 			square = cboard.getPiece(x-1,y+1);
-			if(square!=null&&square.isOccupied()&&square.isCapturable(Side.DARK)){
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.DARK)){
 				moveList.add(new Pair<>(x-1,y+1));
 			}
-			//3. Double move
+			//3. Double move if piece is not blocked. Only pawn in 2 and 7th rank can make a two step move
 			square = cboard.getPiece(x,y+2);
-			if(square!=null&&!square.isOccupied()&&longMove==Boolean.TRUE){
+			if(square!=null && !cboard.getPiece(x,y+1).isOccupied() && !square.isOccupied() &&y==1){
 				moveList.add(new Pair<>(x,y+2));
 			}
 		}
@@ -178,16 +173,9 @@ public class Pawn implements ChessPiece{
 		return side;
 	}
 
-	public void disableLongPawnMove(){
-		longMove=Boolean.FALSE;
-	}
-
 	@Override
 	public String toString(){
 		return Constants.Pawn;
 	}
-
-
-
 
 }
