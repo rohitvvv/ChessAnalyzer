@@ -38,6 +38,14 @@ public class Queen implements ChessPiece {
 	}
 
 	@Override
+	public List<Pair<Integer, Integer>> getValidMoves(int x, int y, ChessBoard board) {
+		List<Pair<Integer,Integer>> moveList;
+		moveList = new Bishop(side).getValidMoves(x,y,board);
+		moveList.addAll(new Rook(side).getValidMoves(x,y,board));
+		return moveList;
+	}
+
+	@Override
 	public void setTaken() {
 		// TODO Auto-generated method stub
 	}

@@ -64,21 +64,26 @@ public class Knight implements ChessPiece{
         Pair<Integer,Integer> position = ANConvertor.getPosition(an);
         int x = position.getKey();
         int y = position.getValue();
-        List<Pair<Integer,Integer>> moveList = new ArrayList<>();
-        int i=0,count=0;
-        while(count<8){
-            if(RulesUtils.inBounds(x+knightMoves[i],y+knightMoves[i+1]) &&
-                  (!board.getPiece(x+knightMoves[i],y+knightMoves[i+1]).isOccupied() ||
-                    board.getPiece(x+knightMoves[i],y+knightMoves[i+1]).isCapturable(side))) {
-                moveList.add(new Pair<>(x + knightMoves[i], y + knightMoves[++i]));
-                i++;
-            }else{
-                i=i+2;
-            }
-            count++;
-        }
-        return moveList;
+        return getValidMoves(x,y,board);
     }
+
+	@Override
+	public List<Pair<Integer, Integer>> getValidMoves(int x, int y, ChessBoard board) {
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+		int i=0,count=0;
+		while(count<8){
+			if(RulesUtils.inBounds(x+knightMoves[i],y+knightMoves[i+1]) &&
+					(!board.getPiece(x+knightMoves[i],y+knightMoves[i+1]).isOccupied() ||
+							board.getPiece(x+knightMoves[i],y+knightMoves[i+1]).isCapturable(side))) {
+				moveList.add(new Pair<>(x + knightMoves[i], y + knightMoves[++i]));
+				i++;
+			}else{
+				i=i+2;
+			}
+			count++;
+		}
+		return moveList;
+	}
 
 	@Override
 	public void setTaken() {

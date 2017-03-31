@@ -42,10 +42,5 @@ public class ANConverterTest {
 				() -> assertEquals(pair3, ANConvertor.getPosition("Kc3")),
 				() -> assertEquals(pair3, ANConvertor.getPosition("qc3")));
 
-		//final Pair<Integer, Integer> pair4 = new Pair<Integer, Integer>();
-		//assertAll("Assert C File", 
-			//	() -> assertEquals(pair3, ANConvertor.getPosition("b2")));
-		
-	
 	}
 }

@@ -60,10 +60,15 @@ public class Bishop implements ChessPiece{
 
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an, ChessBoard board) {
-		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
-	    Pair<Integer,Integer> position = ANConvertor.getPosition(an);
+		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
 	    int x = position.getKey();
 	    int y = position.getValue();
+        return getValidMoves(x,y,board);
+	}
+
+	@Override
+	public List<Pair<Integer, Integer>> getValidMoves(int x, int y, ChessBoard board) {
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 		int xd,yd;
 		xd=x;yd=y;  //Reset
 
@@ -96,7 +101,6 @@ public class Bishop implements ChessPiece{
 	@Override
 	public void setTaken() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

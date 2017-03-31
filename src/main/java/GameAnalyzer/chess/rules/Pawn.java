@@ -113,19 +113,60 @@ public class Pawn implements ChessPiece{
 	@Override
 	public List<Pair<Integer, Integer>> getValidMoves(String an, ChessBoard board) {
 		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
-		ChessBoard cboard = (ChessBoard)board;
 		Pair<Integer,Integer> position = ANConvertor.getPosition(an);
 		int x = position.getKey();
 		int y = position.getValue();
+        return getValidMoves(x,y,board);
+	}
+
+	/**
+	 * Special method only for pawn as it has a special capture move.
+	 * This list is a subset of all valid moves Pawn has
+	 * @param x
+	 * @param y
+	 * @param board
+	 * @return
+	 */
+	public List<Pair<Integer,Integer>> getPawnCaptureMoves(int x,int y,ChessBoard board){
+		ChessBoard cboard = (ChessBoard)board;
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
+		ChessBoard.Cell square ;
+		if(side==Side.LIGHT) {
+			square = cboard.getPiece(x-1,y-1);
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.LIGHT)){
+				moveList.add(new Pair<>(x-1,y-1));
+			}
+			square = cboard.getPiece(x+1,y-1);
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.LIGHT)){
+				moveList.add(new Pair<>(x+1,y-1));
+			}
+		}
+		else{
+			square = cboard.getPiece(x+1,y+1);
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.DARK)){
+				moveList.add(new Pair<>(x+1,y+1));
+			}
+			square = cboard.getPiece(x-1,y+1);
+			if(square!=null && square.isOccupied() && square.isCapturable(Side.DARK)){
+				moveList.add(new Pair<>(x-1,y+1));
+			}
+		}
+		return moveList;
+	}
+
+	@Override
+	public List<Pair<Integer, Integer>> getValidMoves(int x, int y, ChessBoard board) {
+		ChessBoard cboard = (ChessBoard)board;
+		List<Pair<Integer,Integer>> moveList = new ArrayList<>();
 		ChessBoard.Cell square ;
 		if(side==Side.LIGHT){
-            //1. If piece is not blocked.
- 			square = cboard.getPiece(x,y-1);
+			//1. If piece is not blocked.
+			square = cboard.getPiece(x,y-1);
 			if(square!=null && !square.isOccupied()){
-              	moveList.add(new Pair<>(x,y-1));
-    		}
+				moveList.add(new Pair<>(x,y-1));
+			}
 			//2. If piece is available for capture
-            square = cboard.getPiece(x-1,y-1);
+			square = cboard.getPiece(x-1,y-1);
 			if(square!=null && square.isOccupied() && square.isCapturable(Side.LIGHT)){
 				moveList.add(new Pair<>(x-1,y-1));
 			}
@@ -140,7 +181,7 @@ public class Pawn implements ChessPiece{
 			}
 		}
 		else{ //Dark Piece
-        	//1. If piece is not blocked
+			//1. If piece is not blocked
 			square = cboard.getPiece(x,y+1);
 			if(square!=null && !square.isOccupied()){
 				moveList.add(new Pair<>(x,y+1));
@@ -161,8 +202,8 @@ public class Pawn implements ChessPiece{
 			}
 		}
 		return moveList;
-	}
-	
+   }
+
 	@Override
 	public void setTaken() {
 		available=Boolean.TRUE;
