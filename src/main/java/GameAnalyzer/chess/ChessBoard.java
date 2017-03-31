@@ -68,6 +68,10 @@ public class ChessBoard{
 
 	/**
 	 * This method sets a piece on the board and resets the previous position of the chess piece
+	 * Follow the following strategy
+	 * 1. Find the chess piece that can move to target position.
+	 * 2. Reset the position of the piece
+	 * 3. Allocate the same piece to the new position.
 	 * @param x
 	 * @param y
 	 * @param piece
@@ -83,25 +87,67 @@ public class ChessBoard{
 			return true;
 		}
 		else{
-			Cell cell = new Cell(piece);
-        	board[x][y]=cell;
+//			Cell cell = new Cell(piece);
+//        	board[x][y]=cell;
 			return true;
 		}
 	}
 
-	ChessPiece findAndErasePreviousPiecePosition(ChessPiece piece){
-		if(piece instanceof Pawn){
-//             Pawn pawn=(Pawn)piece;
-//             Pair<Integer,Integer> position = pawn.getPosition();
-//             int x,y;
-//             x = position.getKey();
-//             y = position.getValue();
-//			 switch (piece.getSide()){
-//				 case DARK: if(board[y--])
-//			}
-		}
-		return null;
-	}
+//	private boolean isMoveInList(List<Pair<Integer,Integer>> movelist, Pair<Integer,Integer> move){
+//        Pair<Integer,Integer> currMove =null;
+//		Iterator itr = movelist.iterator();
+//		while(itr.hasNext()){
+//			currMove = (Pair<Integer,Integer>)itr.next();
+//			if(currMove.equals(move))
+//				return true;
+//		}
+//	   return false;
+//	}
+
+//	 Pair<Integer,Integer> findPreviousPiecePosition(ChessPiece piece){
+//        Pair<Integer,Integer> currPosition = null;
+//        int x,y;
+//		List<Pair<Integer, Integer>> moveList = null;
+//		if(piece instanceof Pawn){
+//			switch (piece.getSide()){
+//				case DARK:
+//					       currPosition = ((Pawn) piece).getPosition();
+//					       x = currPosition.getKey();
+//					       y = currPosition.getValue();
+//					       if(board[x][y-2]!=null) {
+//							   moveList = ((Pawn) piece).getValidMoves(x, y - 2);
+//							   if (isMoveInList(moveList, currPosition)) {
+//								   return new Pair<>(x,y-2);
+//							   }
+//						   }
+//				           if(board[x][y-1]!=null){
+//							   moveList = ((Pawn) piece).getValidMoves(x, y - 1);
+//							   if (isMoveInList(moveList, currPosition)) {
+//								   return new Pair<>(x,y-1);
+//							   }
+//						   }
+//					       break;
+//				case LIGHT:
+//							currPosition = ((Pawn) piece).getPosition();
+//							x = currPosition.getKey();
+//							y = currPosition.getValue();
+//							if(board[x][y+2]!=null) {
+//								moveList = ((Pawn) piece).getValidMoves(x, y + 2);
+//								if (isMoveInList(moveList, currPosition)) {
+//									return new Pair<>(x,y+2);
+//								}
+//							}
+//							if(board[x][y+1]!=null){
+//								moveList = ((Pawn) piece).getValidMoves(x, y + 1);
+//								if (isMoveInList(moveList, currPosition)) {
+//									return new Pair<>(x,y+1);
+//								}
+//							}
+//							break;
+// 			}
+//		}
+//		return null;
+//	}
 
     //Cell has a chess piece
 	public class Cell{

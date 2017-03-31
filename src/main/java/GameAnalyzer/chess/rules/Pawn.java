@@ -23,6 +23,7 @@ public class Pawn implements ChessPiece{
     //Indicates a two position move of a pawn
     boolean longMove;
     Side side;
+    public String agn = null;
 
     public Pawn(Side side){
     	available= Boolean.TRUE;
@@ -59,6 +60,7 @@ public class Pawn implements ChessPiece{
         available = Boolean.FALSE;
         this.side = side;
         this.position = ANConvertor.getPosition(an);
+        this.agn=an;
 	}
 
 	/**
