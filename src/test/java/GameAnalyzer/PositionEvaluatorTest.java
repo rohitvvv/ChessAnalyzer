@@ -50,8 +50,8 @@ public class PositionEvaluatorTest {
         positions.put(new Queen(Side.DARK), "d8");
         positions.put(new King(Side.DARK), "e8");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
-        assertEquals(3, eval);
+        double eval = PositionEvaluator.evaluate(board);
+        assertEquals(2.7, eval);
     }
 
     public void testEqualPosition() {
@@ -90,8 +90,7 @@ public class PositionEvaluatorTest {
         positions.put(new Queen(Side.DARK), "d8");
         positions.put(new King(Side.DARK), "e8");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
-        System.out.println(eval);
+        double eval = PositionEvaluator.evaluate(board);
         assertEquals(0, eval);
     }
 
@@ -129,9 +128,8 @@ public class PositionEvaluatorTest {
         positions.put(new Queen(Side.DARK), "d8");
         positions.put(new King(Side.DARK), "e8");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
-        System.out.println(eval);
-        assertEquals(-3, eval);
+        double eval = PositionEvaluator.evaluate(board);
+        assertEquals(-2.7, eval);
     }
 
     @Test
@@ -142,8 +140,8 @@ public class PositionEvaluatorTest {
         positions.put(new Pawn(Side.DARK), "c2");
         positions.put(new King(Side.DARK), "d2");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
-        assertTrue(eval == 0);
+        double eval = PositionEvaluator.evaluate(board);
+        assertTrue(eval == 0.1);
     }
 
     @Test
@@ -153,7 +151,7 @@ public class PositionEvaluatorTest {
         positions.put(new Pawn(Side.DARK), "c2");
         positions.put(new King(Side.DARK), "d2");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
+        double eval = PositionEvaluator.evaluate(board);
         assertTrue(eval<0);
     }
 
@@ -164,7 +162,7 @@ public class PositionEvaluatorTest {
         positions.put(new Pawn(Side.LIGHT), "c2");
         positions.put(new King(Side.DARK), "d2");
         ChessBoard board = new ChessBoard(positions);
-        int eval = PositionEvaluator.evaluate(board);
+        double eval = PositionEvaluator.evaluate(board);
         assertTrue(eval>0);
     }
 }

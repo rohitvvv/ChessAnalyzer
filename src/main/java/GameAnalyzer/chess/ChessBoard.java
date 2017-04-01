@@ -3,6 +3,7 @@ package GameAnalyzer.chess;
 import java.util.*;
 
 import GameAnalyzer.chess.rules.*;
+import GameAnalyzer.ui.UIConstants;
 import javafx.util.Pair;
 
 /**
@@ -228,41 +229,51 @@ public class ChessBoard{
   				    switch (cellObject.piece.toString()){
 						case "[Q]":  switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Queen);
-							           break;
+							           darkPieceCount.put(UIConstants.QueenD,piece.getValidMoves(i,j,this).size());
+							            break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Queen);
+                                        lightPieceCount.put(UIConstants.QueenL,piece.getValidMoves(i,j,this).size());
 										break;
 						}
 						break;
 						case "[R]":  switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Rook);
+                                        darkPieceCount.put(UIConstants.RookD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT:updateCount(lightPieceCount,Constants.Rook);
-										break;
+                                        lightPieceCount.put(UIConstants.RookL,piece.getValidMoves(i,j,this).size());
+							            break;
 						}
 						break;
 						case "[N]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Knight);
-										break;
-							case LIGHT: updateCount(lightPieceCount,Constants.Knight);
-										break;
+                                       darkPieceCount.put(UIConstants.KnightD,piece.getValidMoves(i,j,this).size());
+									   break;
+							case LIGHT:updateCount(lightPieceCount,Constants.Knight);
+                                       lightPieceCount.put(UIConstants.KnightL,piece.getValidMoves(i,j,this).size());
+                                       break;
 						}break;
 						case "[P]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Pawn);
+                                       darkPieceCount.put(UIConstants.PawnD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Pawn);
+                                        lightPieceCount.put(UIConstants.PawnL,piece.getValidMoves(i,j,this).size());
 										break;
 						}break;
 						case "[B]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Bishop);
+                                       darkPieceCount.put(UIConstants.BishopD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Bishop);
+                                        lightPieceCount.put(UIConstants.BishopL,piece.getValidMoves(i,j,this).size());
 										break;
 						}break;
 						case "[K]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.King);
-								break;
+                                       break;
 							case LIGHT: updateCount(lightPieceCount,Constants.King);
-								break;
+                                        break;
 						}break;
 					}
 				}
@@ -292,5 +303,20 @@ public class ChessBoard{
        map.put(Constants.Queen,0);
        map.put(Constants.Rook,0);
        map.put(Constants.King,0);
+       //Use this constants for mobility count
+	   map.put(UIConstants.BishopD,0);
+	   map.put(UIConstants.KnightD,0);
+	   map.put(UIConstants.RookD,0);
+	   map.put(UIConstants.QueenD,0);
+	   map.put(UIConstants.PawnD,0);
+	   map.put(UIConstants.KnightD,0);
+       map.put(UIConstants.BishopL,0);
+       map.put(UIConstants.KnightL,0);
+       map.put(UIConstants.RookL,0);
+       map.put(UIConstants.QueenL,0);
+       map.put(UIConstants.PawnL,0);
+       map.put(UIConstants.KnightL,0);
 	}
+
+
 }

@@ -1,17 +1,14 @@
 package GameAnalyzer.ui;
 
 import GameAnalyzer.chess.ChessBoard;
+import GameAnalyzer.chess.Evaluator.PositionEvaluator;
 import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.ChessPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
@@ -43,6 +40,11 @@ public class AppController implements Initializable {
 
     @FXML
     private Button nextMove;
+
+    @FXML
+    private Label score;
+
+
 
     final int boardSize = 8;
     int gameIndex=0;
@@ -103,6 +105,7 @@ public class AppController implements Initializable {
                 }
                 square.setStyle("-fx-background-color: "+color+";");
                 chessBoard.add(square, col, row);
+                score.setText(PositionEvaluator.evaluate(board).toString());
                 square.requestLayout();
                 chessBoard.requestLayout();
             }
