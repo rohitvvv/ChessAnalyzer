@@ -29,32 +29,35 @@ public class ChessBoardFactory {
       //Additional space for the initial configuration
       ChessBoard[] boards = new ChessBoard[moves.length+1];
 
-      boards[0]=getChessBoard();
+      boards[0] = getStartPositionChessBoard();
       //Construct Chess Boards based on configuration
       /**
         1.e4 d6 2.d4 Nf6 3.Nc3 g6 4.f4 Bg7 5.Nf3 O-O 6.e5 Nfd7 7.h4 c5 8.e6 fxe6
         9.h5 gxh5 10.Rxh5 Nf6 11.Rh4 Nc6 12.Be3 Qa5 13.Bd3 cxd4 14.Nxd4 Nxd4 15.Bxd4 e5
         16.fxe5 dxe5 17.Be3 e4 18.Bc4+ Kh8 19.Qd4 Bg4 20.Bb3 Rac8 21.Bd2 Qa6 22.Qe3 Nd5
       */
-      for(int i=0;i<moves.length;i++){
+      for(int i=1;i<moves.length+1;i++){
           //Copy the previous board
-          ChessBoard board = new ChessBoard((boards[i]));
+          ChessBoard board = new ChessBoard(boards[i-1]);
+          // Map<ChessPiece,String> positions = boards[i-1].getPosistions();
+          // ChessBoard board = new ChessBoard(positions);
           //Mutate the board based on the move
-          mutateBoard(board,moves[i]);
-          boards[i+1]=board;
+          mutateBoard(board,moves[i-1]);
+          boards[i]=board;
       }
       return boards;
     };
 
-
+    //Mutate the board and return the new chessboard based on the new move
     private static ChessBoard mutateBoard(ChessBoard board,String move){
+        boolean captureMove = false;
         Pair<Integer,Integer> toPosition = ANConvertor.getPosition(move);
         int x=toPosition.getKey();
         int y=toPosition.getValue();
-        ChessPiece piece =getChessPiece(move);
-        if(board.getPiece(x,y).isOccupied())
-            new Exception("Cell already occupied");
-        board.setPiece(x,y,piece);
+        ChessPiece piece = getChessPiece(move);
+        if(move.contains("x")||move.contains("X"))
+            captureMove=true;
+        board.setPiece(x,y,piece,captureMove);
         System.out.println(board.toString());
         return board;
     }
@@ -64,46 +67,47 @@ public class ChessBoardFactory {
         if(move.length()==2){
             return new Pawn(toggleSide());
         }
-        //Capture move
-        if(move.indexOf("x")>0||move.indexOf("X")>0){
-
-        }
+        //Major piece movement  Nf3 Nf6
+        if(move.length()==3||move.indexOf("x")>0||move.indexOf("X")>0){
+            //Knight
+            if(move.contains("N")){
+                return new Knight(toggleSide());
+            }
+            if(move.contains("B")){
+                return new Bishop(toggleSide());
+            }
+            if(move.contains("Q")){
+                return new Queen(toggleSide());
+            }
+            if(move.contains("K")){
+                return new King(toggleSide());
+            }
+            if(move.contains("R")){
+                return new Rook(toggleSide());
+            }
+            if(move.contains("a")||move.contains("b")||move.contains("c")||move.contains("d")||move.contains("e")||
+               move.contains("f")||move.contains("g")||move.contains("h"))
+                return new Pawn(toggleSide());
+            }
         return null;
     }
 
     private static Side toggleSide() {
-         if(sideToggle == Side.DARK)
+         if(sideToggle == Side.DARK) {
+             sideToggle=Side.LIGHT;
              return Side.LIGHT;
-         else
+         }
+         else {
+             sideToggle=Side.DARK;
              return Side.DARK;
+         }
     }
-//    /**
-//     * Construct Board Configurations depending on the length of the game
-//     * @return
-//     */
-//    public static ChessBoard[] getChessBoardFromPGN(String pgn){
-//      String []moves = pgn.split(" ");
-//      for(int i=0;i<moves.length;i++){
-//          int index = moves[i].indexOf('.');
-//          if(index>0)
-//              moves[i]=moves[i].substring(index+1);
-//      }
-//
-////      for(String move:moves){
-////          System.out.println(move);
-////      }
-//
-//      ChessBoard[] boards = new ChessBoard[moves.length];
-//      boards[0]=getChessBoard();
-//
-//      return boards;
-//    }
 
     /**
-     * Initial configuratin of the board
+     * Initial configuration of the board
      * @return
      */
-    public static ChessBoard getChessBoard(){
+    public static ChessBoard getStartPositionChessBoard(){
         Map<ChessPiece, String> positions = new HashMap<>();
         positions.put(new Pawn(Side.LIGHT), "a2");
         positions.put(new Pawn(Side.LIGHT), "b2");

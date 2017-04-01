@@ -91,6 +91,22 @@ public class King implements ChessPiece{
 		return list;
 	}
 
+	public List<Pair<Integer, Integer>> getValidMoves(int x,int y) {
+        int i=0;
+        List<Pair<Integer,Integer>> kingSquares = new ArrayList<>();
+		while(i<validKingPositions.length) {
+            if(RulesUtils.inBounds(x + validKingPositions[i], y + validKingPositions[i + 1])){
+				kingSquares.add(new Pair<Integer, Integer>(x + validKingPositions[i],
+						y + validKingPositions[++i]));
+				i++;
+			}
+			else{
+				i=i+2;
+			}
+		}
+		return kingSquares;
+	}
+
 	/**
 	 * Get Attacked squares by [side] pieces.
 	 * @param side

@@ -64,10 +64,10 @@
    <bottom>
       <HBox alignment="CENTER">
          <children>
-            <Button fx:id="backStep" mnemonicParsing="false" text="|&lt;" />
-            <Button fx:id="frontStep" mnemonicParsing="false" text="&gt;|" />
-            <Button fx:id="fastForward" mnemonicParsing="false" text="&gt;" />
-          <Button fx:id="reverse" mnemonicParsing="false" text="&lt;" />
+            <Button fx:id="start" mnemonicParsing="false" onAction="#onStartClicked" text="|&lt;" />
+          <Button fx:id="previousMove" mnemonicParsing="false" onAction="#onPreviousMoveClicked" text="&lt;" />
+            <Button fx:id="nextMove" mnemonicParsing="false" onAction="#onNextMoveClicked" text="&gt;" />
+            <Button fx:id="end" mnemonicParsing="false" onAction="#onEndClicked" text="&gt;|" />
          </children>
       </HBox>
    </bottom>

@@ -11,15 +11,18 @@ import javafx.util.Pair;
 
 public class ChessBoard{
 
-	Cell [][]board;
 	int dimension=8;
-
-	/**
-	 * Copy Constructor
-	 * @param board
-	 */
+	Cell [][]board = new Cell[dimension][dimension];
 	public ChessBoard(ChessBoard board){
-		this.board=board.board;
+	   //Explicit copy as reference copy will not work
+	   for(int i=0;i<dimension;i++) {
+		   for (int j = 0; j < dimension; j++) {
+		   	   if((board.board[i][j]).isOccupied())
+                 this.board[i][j] = new Cell(board.board[i][j].piece);
+		   	   else
+		   	   	 this.board[i][j]= new Cell(null);
+		   }
+	   }
 	}
 
 	/**
@@ -29,7 +32,7 @@ public class ChessBoard{
 	public ChessBoard(Map<ChessPiece,String> positions){
 		board= new Cell[dimension][dimension];
 		initializeBoard(dimension);
-		populateBoard(positions);
+    	populateBoard(positions);
 	}
 
 	/**
@@ -69,85 +72,94 @@ public class ChessBoard{
 	/**
 	 * This method sets a piece on the board and resets the previous position of the chess piece
 	 * Follow the following strategy
-	 * 1. Find the chess piece that can move to target position.
-	 * 2. Reset the position of the piece
-	 * 3. Allocate the same piece to the new position.
+	 * 1. Find the piece which can reach x,y
+	 * 2. Move the peice
+	 * 3. Reset the old position
 	 * @param x
 	 * @param y
 	 * @param piece
 	 * @return
 	 */
-	public boolean setPiece(int x,int y,ChessPiece piece){
-		if(x<0||x>7||y<0||y>7){
-			//TODO Use Optional
-			return false;
-		}else if(piece==null){
-			//Remove the piece;
-			board[x][y]=null;
+	public boolean setPiece(int x,int y,ChessPiece piece,boolean captureMove){
+		if(RulesUtils.inBounds(x,y) && piece!=null){
+		  	erasePreviousPosition(x,y,piece,captureMove);
+			board[x][y].piece = piece;
+			board[x][y].occupied=true; //Mark as occupied
 			return true;
 		}
-		else{
-//			Cell cell = new Cell(piece);
-//        	board[x][y]=cell;
-			return true;
-		}
+		return true;
 	}
 
-//	private boolean isMoveInList(List<Pair<Integer,Integer>> movelist, Pair<Integer,Integer> move){
-//        Pair<Integer,Integer> currMove =null;
-//		Iterator itr = movelist.iterator();
-//		while(itr.hasNext()){
-//			currMove = (Pair<Integer,Integer>)itr.next();
-//			if(currMove.equals(move))
-//				return true;
-//		}
-//	   return false;
-//	}
+	public void erasePreviousPosition(int x,int y,ChessPiece piece,boolean captureMove){
+		Side side = piece.getSide();
+		Pair<Integer,Integer> position= null;
+		int xc,yc;
+		position = findPiece(piece,x,y,captureMove);
+		xc=position.getKey();
+		yc=position.getValue();
+		board[xc][yc].reset();
+		board[xc][yc].piece=null;
+	}
 
-//	 Pair<Integer,Integer> findPreviousPiecePosition(ChessPiece piece){
-//        Pair<Integer,Integer> currPosition = null;
-//        int x,y;
-//		List<Pair<Integer, Integer>> moveList = null;
-//		if(piece instanceof Pawn){
-//			switch (piece.getSide()){
-//				case DARK:
-//					       currPosition = ((Pawn) piece).getPosition();
-//					       x = currPosition.getKey();
-//					       y = currPosition.getValue();
-//					       if(board[x][y-2]!=null) {
-//							   moveList = ((Pawn) piece).getValidMoves(x, y - 2);
-//							   if (isMoveInList(moveList, currPosition)) {
-//								   return new Pair<>(x,y-2);
-//							   }
-//						   }
-//				           if(board[x][y-1]!=null){
-//							   moveList = ((Pawn) piece).getValidMoves(x, y - 1);
-//							   if (isMoveInList(moveList, currPosition)) {
-//								   return new Pair<>(x,y-1);
-//							   }
-//						   }
-//					       break;
-//				case LIGHT:
-//							currPosition = ((Pawn) piece).getPosition();
-//							x = currPosition.getKey();
-//							y = currPosition.getValue();
-//							if(board[x][y+2]!=null) {
-//								moveList = ((Pawn) piece).getValidMoves(x, y + 2);
-//								if (isMoveInList(moveList, currPosition)) {
-//									return new Pair<>(x,y+2);
-//								}
-//							}
-//							if(board[x][y+1]!=null){
-//								moveList = ((Pawn) piece).getValidMoves(x, y + 1);
-//								if (isMoveInList(moveList, currPosition)) {
-//									return new Pair<>(x,y+1);
-//								}
-//							}
-//							break;
-// 			}
-//		}
-//		return null;
-//	}
+	public Pair<Integer,Integer> findPiece(ChessPiece piece,int x,int y,boolean captureMove) {
+	    Pair<Integer,Integer> position=null;
+		int i,j;
+		String cpiece = piece.toString();
+		//Side side = piece.getSide();
+		Pair<Integer,Integer> checkLocation = new Pair<>(x,y);
+	   	for (i = 0; i < dimension; i++) {
+				for (j = 0; j < dimension; j++) {
+					switch (cpiece) { //find the piece and return that
+
+						case "[P]":  if(!captureMove && (board[i][j].isOccupied()) && board[i][j].piece instanceof Pawn){
+										 List<Pair<Integer,Integer>> possibleMoves = ((Pawn) board[i][j].piece).getValidMoves(i,j);
+										 if(possibleMoves.contains(checkLocation)&&(piece.getSide()==board[i][j].piece.getSide()))
+											return new Pair<>(i,j);
+									 }
+									 if(captureMove && board[i][j].piece instanceof Pawn ){
+										List<Pair<Integer,Integer>> possibleMoves = ((Pawn) board[i][j].piece).getPawnCaptureMoves(i,j,this);
+										if(possibleMoves.contains(checkLocation))
+											return new Pair<>(i,j);
+						             }
+						break;
+
+    					case "[N]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof Knight){
+										List<Pair<Integer,Integer>> possibleMoves = ((Knight) board[i][j].piece).getValidMoves(i,j);
+										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
+											return new Pair<>(i,j);
+						             }
+						break;
+
+						case "[B]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof Bishop){
+										List<Pair<Integer,Integer>> possibleMoves = ((Bishop) board[i][j].piece).getValidMoves(i,j);
+										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
+											return new Pair<>(i,j);
+									 }
+						break;
+
+						case "[Q]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof Queen){
+										List<Pair<Integer,Integer>> possibleMoves = ((Queen) board[i][j].piece).getValidMoves(i,j);
+										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
+											return new Pair<>(i,j);
+						             }
+						break;
+						case "[K]":  if(captureMove==true || board[i][j].isOccupied() && board[i][j].piece instanceof King){
+										List<Pair<Integer,Integer>> possibleMoves = ((King) board[i][j].piece).getValidMoves(i,j);
+										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
+											return new Pair<>(i,j);
+						             }
+						break;
+						case "[R]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof Rook){
+										List<Pair<Integer,Integer>> possibleMoves = ((Rook) board[i][j].piece).getValidMoves(i,j);
+										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
+											return new Pair<>(i,j);
+									 }
+						break;
+					}
+				}
+			}
+		return position;
+	}
 
     //Cell has a chess piece
 	public class Cell{
@@ -163,6 +175,8 @@ public class ChessBoard{
 		public ChessPiece getPeice(){
 			return piece;
 		}
+
+		public void reset(){ occupied = false;}
 
 		public boolean isOccupied(){
 			return occupied;

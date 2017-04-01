@@ -43,6 +43,10 @@ import javafx.util.Pair;
          else{
         	 strippedNotation = an;
          }
+		 //Capture Move
+		 if(an.contains("x")||an.contains("X")){
+         	 strippedNotation = an.substring(an.indexOf("x")+1);
+		 }
          Integer file = File.getOridinal(strippedNotation.charAt(0));
          Integer rank = Character.getNumericValue(strippedNotation.charAt(1));
          //Pair<Integer,Integer> pair = new Pair<Integer,Integer>(8-rank,file);

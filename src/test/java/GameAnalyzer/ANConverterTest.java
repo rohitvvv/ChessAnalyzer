@@ -43,4 +43,12 @@ public class ANConverterTest {
 				() -> assertEquals(pair3, ANConvertor.getPosition("qc3")));
 
 	}
+
+	@Test
+	public void testCaptureMove(){
+		final Pair<Integer,Integer> pair1 = new Pair<>(1,4);
+		assertEquals(ANConvertor.getPosition("Axb4"),pair1);
+		final Pair<Integer,Integer> pair2 = new Pair<>(3,4);
+		assertEquals(ANConvertor.getPosition("cxd4"),pair2);
+	}
 }

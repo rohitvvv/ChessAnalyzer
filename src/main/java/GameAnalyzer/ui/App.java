@@ -18,6 +18,7 @@ public class App extends Application{
     Logger logger = LoggerFactory.getLogger(App.class.getName());
     private Stage stage;
 
+
     public static void main( String[] args ) {
         launch(args);
     }
