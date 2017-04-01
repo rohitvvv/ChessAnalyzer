@@ -51,6 +51,12 @@ public class ChessBoardFactory {
     //Mutate the board and return the new chessboard based on the new move
     private static ChessBoard mutateBoard(ChessBoard board,String move){
         boolean captureMove = false;
+        if(move.contains("O-O-O")){
+            return board.queenSideCaste(toggleSide());
+        }
+        if(move.contains("O-O")){
+            return board.kingSideCastle(toggleSide());
+        }
         Pair<Integer,Integer> toPosition = ANConvertor.getPosition(move);
         int x=toPosition.getKey();
         int y=toPosition.getValue();

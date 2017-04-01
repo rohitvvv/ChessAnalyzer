@@ -162,6 +162,51 @@ public class ChessBoard{
 		return position;
 	}
 
+	public ChessBoard queenSideCaste(Side side){
+		switch (side){
+			case DARK:
+				    board[2][0] = new Cell(new King(Side.DARK));
+				    board[3][0] = new Cell(new Rook(Side.DARK));
+				    board[4][0].reset();
+				    board[4][0].piece=null;
+				    board[0][0].reset();
+				    board[0][0].piece=null;
+				    break;
+			case LIGHT:
+				    board[2][7]= new Cell(new King(Side.LIGHT));
+				    board[3][7]= new Cell(new Rook(Side.LIGHT));
+				    board[4][7].reset();
+				    board[4][7].piece=null;
+				    board[0][7].reset();
+				    board[0][7].piece=null;
+				    break;
+		}
+		System.out.println(this.toString());
+		return this;
+	}
+
+	public ChessBoard kingSideCastle(Side side){
+		switch (side){
+			case DARK:
+                   board[6][0] = new Cell(new King(Side.DARK));
+                   board[5][0] = new Cell(new Rook(Side.DARK));
+                   board[4][0].reset();
+				   board[4][0].piece=null;
+                   board[7][0].reset();
+				   board[7][0].piece=null;
+                   break;
+			case LIGHT:
+				   board[6][7] = new Cell(new King(Side.LIGHT));
+				   board[5][7] = new Cell(new Rook(Side.LIGHT));
+				   board[4][7].reset();
+				   board[4][7].piece=null;
+				   board[7][7].reset();
+				   board[7][7].piece=null;
+				break;
+		}
+		return this;
+	}
+
     //Cell has a chess piece
 	public class Cell{
 		boolean occupied=Boolean.FALSE;
