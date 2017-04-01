@@ -5,6 +5,8 @@ import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.ChessPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -30,9 +32,27 @@ public class AppController implements Initializable {
     @FXML
     private MenuItem loadGame;
 
+    @FXML
+    private Button end;
+
+    @FXML
+    private Button start;
+
+    @FXML
+    private Button previousMove;
+
+    @FXML
+    private Button nextMove;
+
     final int boardSize = 8;
+    int gameIndex=0;
 
     Logger logger = LoggerFactory.getLogger(AppController.class.getName());
+
+    boolean gameLoaded=Boolean.FALSE;
+
+    ChessBoard[] chessBoards;
+    int gameSize=0;
 
     public void initialize(URL location, ResourceBundle resources) {
        logger.info("Initializing Controller");
@@ -40,17 +60,27 @@ public class AppController implements Initializable {
     }
 
     void initializeChessBoard(){
-        ChessBoard board = ChessBoardFactory.getChessBoard();
-        loadChessBoard(board);
+        gameIndex=0;
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col ++) {
+                String color ;
+                StackPane square = new StackPane();
+                if ((row + col) % 2 == 0) {
+                    color = "#F2D8B5";
+                } else {
+                    color = "#B58763";
+                }
+                square.setStyle("-fx-background-color: "+color+";");
+                chessBoard.add(square, col, row);
+            }
+        }
+
     }
 
     void loadChessBoard(ChessBoard board){
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col ++) {
-                ImageView pawn = new ImageView(new Image("images/pawn-w.png"));
                 StackPane square = new StackPane();
-                pawn.setFitWidth(50);
-                pawn.setFitHeight(50);
                 String color ;
                 ChessBoard.Cell cell = board.getPiece(col,row);
                 URL image = null;
@@ -72,10 +102,12 @@ public class AppController implements Initializable {
                     color = "#B58763";
                 }
                 square.setStyle("-fx-background-color: "+color+";");
-
                 chessBoard.add(square, col, row);
+                square.requestLayout();
+                chessBoard.requestLayout();
             }
         }
+        chessBoard.requestLayout();
     }
 
     @FXML
@@ -85,11 +117,60 @@ public class AppController implements Initializable {
         dialog.setHeaderText("Load Game");
         dialog.setContentText("PGN");
         Optional<String> result = dialog.showAndWait();
-        //result.ifPresent(name -> System.out.println(name));
         if(result.isPresent()){
             //Do something.
+            gameLoaded=Boolean.TRUE;
             System.out.println(result.get());
-            ChessBoardFactory.getChessBoardFromPGN(result.get());
+            chessBoards = ChessBoardFactory.getChessBoardFromPGN(result.get());
+            gameSize=chessBoards.length;
         }
+    }
+
+    @FXML
+    public void onEndClicked(){
+        if(!gameLoaded) {
+            gameNotLoadedErrorDialog();
+        }
+        else{
+
+        }
+    }
+    @FXML
+    public void onStartClicked(){
+        if(!gameLoaded) {
+            gameNotLoadedErrorDialog();
+        }
+        else{
+
+        }
+    }
+
+    @FXML
+    public void onPreviousMoveClicked(){
+        if(!gameLoaded) {
+            gameNotLoadedErrorDialog();
+        }
+        else{
+            if(gameIndex<gameSize&&gameIndex>=0)
+                loadChessBoard(chessBoards[--gameIndex]);
+        }
+    }
+    @FXML
+    public void onNextMoveClicked(){
+        if(!gameLoaded) {
+           gameNotLoadedErrorDialog();
+        }
+        else{
+          if(gameIndex<gameSize)
+            loadChessBoard(chessBoards[gameIndex++]);
+        }
+    }
+
+    private void gameNotLoadedErrorDialog(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Game Load Error");
+        alert.setHeaderText("Game not yet loaded");
+        alert.setContentText("Load the game from the file menu");
+        alert.showAndWait();
     }
 }

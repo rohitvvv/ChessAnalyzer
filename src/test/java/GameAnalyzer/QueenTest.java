@@ -74,4 +74,39 @@ public class QueenTest {
         List<Pair<Integer, Integer>> validQueenMoves2 = queen2.getValidMoves("h1", board2);
         assertTrue(validQueenMoves2.size() == 4);
     }
+    @Test
+    public void testQueenPositionsWithoutBoard(){
+        Queen queen = new Queen(Side.LIGHT);
+        List<Pair<Integer, Integer>> positions = queen.getValidMoves(3,4); //1,6 -> 1,4 1,5
+        assertAll("Queen positions",
+                () -> assertTrue(positions.contains(new Pair<>(2, 3))),
+                () -> assertTrue(positions.contains(new Pair<>(1, 2))),
+                () -> assertTrue(positions.contains(new Pair<>(0, 1))),
+                () -> assertTrue(positions.contains(new Pair<>(2, 5))),
+                () -> assertTrue(positions.contains(new Pair<>(1, 6))),
+                () -> assertTrue(positions.contains(new Pair<>(0, 7))),
+                () -> assertTrue(positions.contains(new Pair<>(4, 3))),
+                () -> assertTrue(positions.contains(new Pair<>(5, 2))),
+                () -> assertTrue(positions.contains(new Pair<>(6, 1))),
+                () -> assertTrue(positions.contains(new Pair<>(7, 0))),
+                () -> assertTrue(positions.contains(new Pair<>(4, 5))),
+                () -> assertTrue(positions.contains(new Pair<>(5, 6))),
+                () -> assertTrue(positions.contains(new Pair<>(6, 7))),
+
+                () -> assertTrue(positions.contains(new Pair<>(2,4))),
+                () -> assertTrue(positions.contains(new Pair<>(1,4))),
+                () -> assertTrue(positions.contains(new Pair<>(0,4))),
+                () -> assertTrue(positions.contains(new Pair<>(4,4))),
+                () -> assertTrue(positions.contains(new Pair<>(5,4))),
+                () -> assertTrue(positions.contains(new Pair<>(6,4))),
+                () -> assertTrue(positions.contains(new Pair<>(7,4))),
+                () -> assertTrue(positions.contains(new Pair<>(3,0))),
+                () -> assertTrue(positions.contains(new Pair<>(3,1))),
+                () -> assertTrue(positions.contains(new Pair<>(3,2))),
+                () -> assertTrue(positions.contains(new Pair<>(3,3))),
+                () -> assertTrue(positions.contains(new Pair<>(3,5))),
+                () -> assertTrue(positions.contains(new Pair<>(3,6))),
+                () -> assertTrue(positions.contains(new Pair<>(3,7)))
+        );
+    }
 }
