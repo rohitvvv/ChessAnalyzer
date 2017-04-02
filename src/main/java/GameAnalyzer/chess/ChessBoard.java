@@ -144,7 +144,7 @@ public class ChessBoard{
 											return new Pair<>(i,j);
 						             }
 						break;
-						case "[K]":  if(captureMove==true || board[i][j].isOccupied() && board[i][j].piece instanceof King){
+						case "[K]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof King){
 										List<Pair<Integer,Integer>> possibleMoves = ((King) board[i][j].piece).getValidMoves(i,j);
 										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
 											return new Pair<>(i,j);

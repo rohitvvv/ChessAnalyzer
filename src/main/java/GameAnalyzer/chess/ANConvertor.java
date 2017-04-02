@@ -37,9 +37,17 @@ import javafx.util.Pair;
 	  */
  	 public static Pair<Integer,Integer> getPosition(String an){
  		 String strippedNotation = null;
- 		 if(an.length()>2){
+// 		 if(an.length()==4||!an.contains("x")) { //Rfc8
+//			 strippedNotation = an.substring(0, 1) + an.substring(2, 4);
+//			 strippedNotation = strippedNotation.substring(1, strippedNotation.length());
+//		 }
+ 		 if(an.length()>2){//Rc7
  			 strippedNotation = an.substring(1,an.length());
  		 }
+// 		 else if(an.contains("+")&&an.length()>4){
+// 		 	 strippedNotation = an.substring(0,an.indexOf("+")-1);
+//		 }
+
          else{
         	 strippedNotation = an;
          }
@@ -53,6 +61,10 @@ import javafx.util.Pair;
 		 Pair<Integer,Integer> pair = new Pair<Integer,Integer>(file,8-rank);
 		 return pair;
      }
+
+	public static void main(String[] args) {
+		System.out.println(ANConvertor.getPosition("Rfc8"));
+	}
   }
  		
       
