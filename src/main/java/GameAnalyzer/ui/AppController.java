@@ -6,9 +6,11 @@ import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.ChessPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
@@ -44,7 +46,11 @@ public class AppController implements Initializable {
     @FXML
     private Label score;
 
+    @FXML
+    private Label darkScore;
 
+    @FXML
+    private Label lightScore;
 
     final int boardSize = 8;
     int gameIndex=0;
@@ -105,7 +111,20 @@ public class AppController implements Initializable {
                 }
                 square.setStyle("-fx-background-color: "+color+";");
                 chessBoard.add(square, col, row);
-                score.setText(PositionEvaluator.evaluate(board).toString());
+                double scoreValue  = PositionEvaluator.evaluate(board);
+                if(scoreValue<0) {
+                    score.setStyle("-fx-background-color: red");
+                    darkScore.setStyle("-fx-background-color: green");
+                    lightScore.setStyle("-fx-background-color: red");
+                }
+                else{
+                    score.setStyle("-fx-background-color: green");
+                    darkScore.setStyle("-fx-background-color: red");
+                    lightScore.setStyle("-fx-background-color: green");
+                }
+                score.setText(Double.toString(scoreValue));
+                darkScore.setText(Double.toString(PositionEvaluator.darkEval));
+                lightScore.setText(Double.toString(PositionEvaluator.lightEval));
                 square.requestLayout();
                 chessBoard.requestLayout();
             }
@@ -148,14 +167,17 @@ public class AppController implements Initializable {
         }
     }
 
+    /**
+     * TODO: This is buggy
+     */
     @FXML
     public void onPreviousMoveClicked(){
         if(!gameLoaded) {
             gameNotLoadedErrorDialog();
         }
         else{
-            if(gameIndex<gameSize&&gameIndex>=0)
-                loadChessBoard(chessBoards[--gameIndex]);
+            if(gameIndex<gameSize&&gameIndex-2>=0)
+                loadChessBoard(chessBoards[gameIndex-2]);
         }
     }
     @FXML

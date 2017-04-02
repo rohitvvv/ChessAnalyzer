@@ -2,6 +2,7 @@ package GameAnalyzer.chess.Evaluator;
 
 import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
+import GameAnalyzer.chess.rules.Pawn;
 import GameAnalyzer.ui.UIConstants;
 import javafx.util.Pair;
 import java.util.HashMap;
@@ -23,6 +24,9 @@ public class PositionEvaluator {
     static final double KING_WEIGHT = 200;
     static final double BISHOP_WEIGHT = 3;
     static final double MOBILITY = 0.1;
+
+    public static double lightEval = 0;
+    public static double darkEval = 0;
     /**
      * Evalue a given chess position
      *
@@ -91,10 +95,14 @@ public class PositionEvaluator {
                   QUEEN_WEIGHT * (Q - Qd) +
                   ROOK_WEIGHT * (R - Rd) +
                   BISHOP_WEIGHT * (B - Bd) +
-                  KNIGHT_WEIGHT * (K - Kd) +
+                  KNIGHT_WEIGHT * (N- Nd) +
                   PAWN_WEIGHT * (P - Pd) +
                   MOBILITY * (lightMobility - darkMobility);
 
+        lightEval = K * KING_WEIGHT + Q *QUEEN_WEIGHT + R * ROOK_WEIGHT + B *BISHOP_WEIGHT  +
+                    N* KNIGHT_WEIGHT + P* PAWN_WEIGHT + lightMobility * MOBILITY;
+        darkEval = Kd * KING_WEIGHT+ Qd * QUEEN_WEIGHT + Rd * ROOK_WEIGHT + Bd * BISHOP_WEIGHT +
+                   Nd * KNIGHT_WEIGHT + Pd * PAWN_WEIGHT + darkMobility * MOBILITY;
         return value;
     }
 
