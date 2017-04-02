@@ -1,6 +1,7 @@
 package GameAnalyzer.chess.engine;
 
 import GameAnalyzer.chess.ChessBoard;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Evaluator.PositionEvaluator;
 import GameAnalyzer.chess.Side;
 import GameAnalyzer.chess.rules.ChessPiece;
@@ -19,11 +20,12 @@ public class AlphaBeta {
    //Start the board with [-∞,+∞]
    //The first argument is the Alpha(Light Pieces) with the worst value. Alpha aims for higher Positive number
    //The second argument is the Beta(Dark Pieces) with the worst value. Beta aims for a smaller Negative number
-
-   static int TOP_LEVEL=10;
+   static int count = 0;
+   static int TOP_LEVEL= Constants.DEPTH;
    Map<Double,Pair<Integer,Integer>> scoreToMoveMapLight = new HashMap<>();
    Map<Double,Pair<Integer,Integer>> scoreToMoveMapDark = new HashMap<>();
-
+   Map<Double,ChessPiece> scoreToPieceLight = new HashMap<>();
+   Map<Double,ChessPiece> scoreToPieceDark = new HashMap<>();
    public double AlphaBetaMax(double alpha,double beta,double depthLeft,ChessBoard board){
      List<Pair<Integer,Integer>> lightMoveList;
      double score,alphaScore;
@@ -42,12 +44,17 @@ public class AlphaBeta {
          x = move.getKey();
          y = move.getValue();
          ChessBoard.Cell cell = board.getPiece(x,y);
-         ChessPiece piece = findPiece(newBoard,move,cell.getPeice().getSide());
+         ChessPiece piece = findPiece(newBoard,move,Side.LIGHT);
          newBoard.setPiece(x,y,piece,cell.isOccupied()); //If its occoupied its a capture move
+         count++;
+         System.out.println(newBoard.toString());
+         System.out.println("BoardCount"+count);
+         System.out.println("Depth"+depthLeft);
          //Create a new chessboard with the move.
-         score=AlphaBetaMin(alphaScore,beta,depthLeft,newBoard);
+         score=AlphaBetaMin(alphaScore,beta,depthLeft-1,newBoard);
          if(depthLeft==TOP_LEVEL){ //Record the scores to move mapping at top level
              scoreToMoveMapLight.put(score,move);
+             scoreToPieceLight.put(score,piece);
          }
          if(score>=beta)
              return beta;    //Beta cutoff
@@ -75,11 +82,17 @@ public class AlphaBeta {
            x = move.getKey();
            y = move.getValue();
            ChessBoard.Cell cell = board.getPiece(x,y);
-           ChessPiece piece = findPiece(newBoard,move,cell.getPeice().getSide());
+           ChessPiece piece = findPiece(newBoard,move,Side.DARK);
            newBoard.setPiece(x,y,piece,cell.isOccupied()); //If its occupied its a capture move
+           count++;
+           System.out.println(newBoard.toString());
+           System.out.println("BoardCount"+count);
+           System.out.println("Depth"+depthLeft);
+
            score=AlphaBetaMax(alpha,betaScore,depthLeft-1,board);
            if(depthLeft==TOP_LEVEL){ //Record the scores to move mapping at top level
                scoreToMoveMapDark.put(score,move);
+               scoreToPieceDark.put(score,piece);
            }
            if(score<=alpha)
              return alpha;//Alpha cutoff
@@ -90,7 +103,7 @@ public class AlphaBeta {
     }
 
     //BadCode. Should not be responsibility of AlphaBeta.
-    //Given a x,y find the peice that can make the move
+    //Given a x,y find the piece that can make the move i.e: which piece can move to x y.
     public static ChessPiece findPiece(ChessBoard board,Pair<Integer,Integer> move,Side side) {
         int i,j;
         for(i = 0; i < 8; i++) {
@@ -113,6 +126,14 @@ public class AlphaBeta {
 
     public Pair<Integer,Integer> getBestDarkMove(double score){
         return scoreToMoveMapDark.get(score);
+    }
+
+    public ChessPiece getBestLightMovePiece(double score){
+        return scoreToPieceLight.get(score);
+    }
+
+    public ChessPiece getBestDarkMovePiece(double score){
+        return scoreToPieceDark.get(score);
     }
 
 }

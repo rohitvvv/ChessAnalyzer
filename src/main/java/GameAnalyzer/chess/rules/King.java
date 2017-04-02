@@ -89,6 +89,7 @@ public class King implements ChessPiece{
 		if(list.isEmpty())
 			isMate=Boolean.TRUE;
 		return list;
+		//return new ArrayList<Pair<Integer, Integer>>();
 	}
 
 	public List<Pair<Integer, Integer>> getValidMoves(int x,int y) {

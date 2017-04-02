@@ -122,7 +122,7 @@ public class ChessBoardFactory {
         positions.put(new Pawn(Side.LIGHT), "e2");
         positions.put(new Pawn(Side.LIGHT), "f2");
         positions.put(new Pawn(Side.LIGHT), "g2");
-        positions.put(new Pawn(Side.LIGHT), "h2");
+        positions.put(new Pawn(Side.LIGHT), "h4");
         positions.put(new Rook(Side.LIGHT), "a1");
         positions.put(new Rook(Side.LIGHT), "h1");
         positions.put(new Knight(Side.LIGHT), "b1");
@@ -148,6 +148,33 @@ public class ChessBoardFactory {
         positions.put(new Bishop(Side.DARK), "f8");
         positions.put(new Queen(Side.DARK), "d8");
         positions.put(new King(Side.DARK), "e8");
+        ChessBoard board = new ChessBoard(positions);
+        return board;
+    }
+
+    public static ChessBoard getPuzzle1(){
+        Map<ChessPiece, String> positions = new HashMap<>();
+        positions.put(new Pawn(Side.LIGHT), "c2");
+        positions.put(new Pawn(Side.LIGHT), "g2");
+        positions.put(new Rook(Side.LIGHT), "a5");
+        positions.put(new Bishop(Side.LIGHT), "h5");
+        positions.put(new King(Side.LIGHT), "c1");
+
+        positions.put(new Pawn(Side.DARK), "a4");
+        positions.put(new Pawn(Side.DARK), "g7");
+        positions.put(new Pawn(Side.DARK), "h6");
+        positions.put(new Queen(Side.DARK), "g8");
+        positions.put(new King(Side.DARK), "c6");
+        ChessBoard board = new ChessBoard(positions);
+        return board;
+    }
+
+    public static ChessBoard getPuzzle2(){
+        Map<ChessPiece, String> positions = new HashMap<>();
+        positions.put(new Knight(Side.LIGHT), "d3");
+        //positions.put(new Knight(Side.LIGHT), "a6");
+        positions.put(new Pawn(Side.DARK), "c5");
+       //positions.put(new Pawn(Side.DARK),"h5");
         ChessBoard board = new ChessBoard(positions);
         return board;
     }

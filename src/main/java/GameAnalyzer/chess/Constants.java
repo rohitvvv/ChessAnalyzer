@@ -10,6 +10,7 @@ final public class Constants {
   public static String Bishop ="[B]";
   public static String Rook = "[R]";
   public static String Queen ="[Q]";
+  public static Integer DEPTH = 5;
 }
 
 
