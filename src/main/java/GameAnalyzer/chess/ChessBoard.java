@@ -14,6 +14,7 @@ public class ChessBoard{
 
 	int dimension=8;
 	Cell [][]board = new Cell[dimension][dimension];
+
 	public ChessBoard(ChessBoard board){
 	   //Explicit copy as reference copy will not work
 	   for(int i=0;i<dimension;i++) {
@@ -74,7 +75,7 @@ public class ChessBoard{
 	 * This method sets a piece on the board and resets the previous position of the chess piece
 	 * Follow the following strategy
 	 * 1. Find the piece which can reach x,y
-	 * 2. Move the peice
+	 * 2. Move the piece
 	 * 3. Reset the old position
 	 * @param x
 	 * @param y
@@ -275,7 +276,7 @@ public class ChessBoard{
 						case "[Q]":  switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Queen);
 							           darkPieceCount.put(UIConstants.QueenD,piece.getValidMoves(i,j,this).size());
-							            break;
+							           break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Queen);
                                         lightPieceCount.put(UIConstants.QueenL,piece.getValidMoves(i,j,this).size());
 										break;
@@ -335,6 +336,46 @@ public class ChessBoard{
 		else{
 			map.put(chessPiece,((Integer)count)+1);
 		}
+	}
+
+	/**
+	 * Useful for Alpha Beta
+	 */
+	public List<Pair<Integer,Integer>> computeValidLightMoves(){
+		List<Pair<Integer,Integer>> validLightMoves = new ArrayList<>();
+		Map<String,List<Pair<Integer,Integer>>> moveMapping = new HashMap<>();
+		for(int i=0;i<8;i++) {
+			for (int j = 0; j < 8; j++) {
+				Cell cellObject = board[i][j];
+				if(cellObject.isOccupied()){
+					ChessPiece piece= cellObject.piece;
+					if(piece.getSide()==Side.LIGHT) {
+					   validLightMoves.addAll(piece.getValidMoves(i,j,this));
+					}
+				}
+			}
+		}
+		return validLightMoves;
+	}
+
+	/**
+	 * Useful for Alpha Beta
+	 */
+	public List<Pair<Integer,Integer>> computeValidDarkMoves(){
+		List<Pair<Integer,Integer>> validDarkMoves = new ArrayList<>();
+		Map<String,List<Pair<Integer,Integer>>> moveMapping = new HashMap<>();
+		for(int i=0;i<8;i++) {
+			for (int j = 0; j < 8; j++) {
+				Cell cellObject = board[i][j];
+				if(cellObject.isOccupied()){
+					ChessPiece piece= cellObject.piece;
+					if(piece.getSide()==Side.DARK) {
+						validDarkMoves.addAll(piece.getValidMoves(i,j,this));
+					}
+				}
+			}
+		}
+		return validDarkMoves;
 	}
 
 	/**
