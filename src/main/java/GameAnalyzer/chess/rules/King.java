@@ -88,8 +88,8 @@ public class King implements ChessPiece{
 		list.addAll(kingSquares);
 		if(list.isEmpty())
 			isMate=Boolean.TRUE;
-		return list;
-		//return new ArrayList<Pair<Integer, Integer>>();
+		//return list;
+		return new ArrayList<Pair<Integer, Integer>>();
 	}
 
 	public List<Pair<Integer, Integer>> getValidMoves(int x,int y) {
@@ -105,7 +105,8 @@ public class King implements ChessPiece{
 				i=i+2;
 			}
 		}
-		return kingSquares;
+		//return kingSquares;
+		return new ArrayList<Pair<Integer, Integer>>();
 	}
 
 	/**

@@ -20,12 +20,14 @@ public class AlphaBeta {
    //Start the board with [-∞,+∞]
    //The first argument is the Alpha(Light Pieces) with the worst value. Alpha aims for higher Positive number
    //The second argument is the Beta(Dark Pieces) with the worst value. Beta aims for a smaller Negative number
+
    static int count = 0;
    static int TOP_LEVEL= Constants.DEPTH;
    Map<Double,Pair<Integer,Integer>> scoreToMoveMapLight = new HashMap<>();
    Map<Double,Pair<Integer,Integer>> scoreToMoveMapDark = new HashMap<>();
    Map<Double,ChessPiece> scoreToPieceLight = new HashMap<>();
    Map<Double,ChessPiece> scoreToPieceDark = new HashMap<>();
+
    public double AlphaBetaMax(double alpha,double beta,double depthLeft,ChessBoard board){
      List<Pair<Integer,Integer>> lightMoveList;
      double score,alphaScore;
@@ -43,9 +45,9 @@ public class AlphaBeta {
          newBoard= new ChessBoard(board);//Create a new board with the old board;
          x = move.getKey();
          y = move.getValue();
-         ChessBoard.Cell cell = board.getPiece(x,y);
+         ChessBoard.Cell cell = newBoard.getPiece(x,y);
          ChessPiece piece = findPiece(newBoard,move,Side.LIGHT);
-         newBoard.setPiece(x,y,piece,cell.isOccupied()); //If its occoupied its a capture move
+         newBoard.setPiece(x,y,piece,cell.isOccupied()); //If its occupied its a capture move
          count++;
          System.out.println(newBoard.toString());
          System.out.println("BoardCount"+count);
@@ -59,7 +61,7 @@ public class AlphaBeta {
          if(score>=beta)
              return beta;    //Beta cutoff
          if(score>alphaScore)
-           alphaScore=alpha; //Alpha behaves likes a maximizer in min Max
+           alphaScore=score; //Alpha behaves likes a maximizer in min Max
      }
      return alphaScore;
    }
@@ -74,7 +76,7 @@ public class AlphaBeta {
        int x,y;
        if(depthLeft==0) {
            PositionEvaluator.evaluate(board);
-           return PositionEvaluator.darkEval;
+           return -PositionEvaluator.darkEval;
        }
         //Get all the moves on a chessBoard for an Beta (Dark Pices)
        for(Pair<Integer,Integer> move:darkMoveList){//For all the moves
@@ -89,7 +91,7 @@ public class AlphaBeta {
            System.out.println("BoardCount"+count);
            System.out.println("Depth"+depthLeft);
 
-           score=AlphaBetaMax(alpha,betaScore,depthLeft-1,board);
+           score=AlphaBetaMax(alpha,betaScore,depthLeft-1,newBoard);
            if(depthLeft==TOP_LEVEL){ //Record the scores to move mapping at top level
                scoreToMoveMapDark.put(score,move);
                scoreToPieceDark.put(score,piece);

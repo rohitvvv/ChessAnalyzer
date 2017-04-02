@@ -39,8 +39,8 @@ public class ChessBoardFactory {
       for(int i=1;i<moves.length+1;i++){
           //Copy the previous board
           ChessBoard board = new ChessBoard(boards[i-1]);
-          // Map<ChessPiece,String> positions = boards[i-1].getPosistions();
-          // ChessBoard board = new ChessBoard(positions);
+          //Map<ChessPiece,String> positions = boards[i-1].getPosistions();
+          //ChessBoard board = new ChessBoard(positions);
           //Mutate the board based on the move
           mutateBoard(board,moves[i-1]);
           boards[i]=board;
@@ -68,7 +68,7 @@ public class ChessBoardFactory {
         return board;
     }
 
-    private static ChessPiece getChessPiece(String move){
+    public static ChessPiece getChessPiece(String move){
         //Pawn move
         if(move.length()==2){
             return new Pawn(toggleSide());
@@ -109,8 +109,40 @@ public class ChessBoardFactory {
          }
     }
 
+
+    public static ChessPiece getChessPiece(String move,Side side){
+        //Pawn move
+        if(move.length()==2){
+            return new Pawn(side);
+        }
+        //Major piece movement  Nf3 Nf6
+        if(move.length()==3||move.indexOf("x")>0||move.indexOf("X")>0){
+            //Knight
+            if(move.contains("N")){
+                return new Knight(side);
+            }
+            if(move.contains("B")){
+                return new Bishop(side);
+            }
+            if(move.contains("Q")){
+                return new Queen(side);
+            }
+            if(move.contains("K")){
+                return new King(side);
+            }
+            if(move.contains("R")){
+                return new Rook(side);
+            }
+            if(move.contains("a")||move.contains("b")||move.contains("c")||move.contains("d")||move.contains("e")||
+                    move.contains("f")||move.contains("g")||move.contains("h"))
+                return new Pawn(side);
+        }
+        return null;
+    }
+
     /**
      * Initial configuration of the board
+     * This is used for initial setup. Don't touch
      * @return
      */
     public static ChessBoard getStartPositionChessBoard(){
@@ -122,7 +154,7 @@ public class ChessBoardFactory {
         positions.put(new Pawn(Side.LIGHT), "e2");
         positions.put(new Pawn(Side.LIGHT), "f2");
         positions.put(new Pawn(Side.LIGHT), "g2");
-        positions.put(new Pawn(Side.LIGHT), "h4");
+        positions.put(new Pawn(Side.LIGHT), "h2");
         positions.put(new Rook(Side.LIGHT), "a1");
         positions.put(new Rook(Side.LIGHT), "h1");
         positions.put(new Knight(Side.LIGHT), "b1");
@@ -174,7 +206,7 @@ public class ChessBoardFactory {
         positions.put(new Knight(Side.LIGHT), "d3");
         //positions.put(new Knight(Side.LIGHT), "a6");
         positions.put(new Pawn(Side.DARK), "c5");
-       //positions.put(new Pawn(Side.DARK),"h5");
+        //positions.put(new Pawn(Side.DARK),"h5");
         ChessBoard board = new ChessBoard(positions);
         return board;
     }

@@ -1,8 +1,11 @@
 package GameAnalyzer.ui;
 
+import GameAnalyzer.chess.ANConvertor;
 import GameAnalyzer.chess.ChessBoard;
+import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Evaluator.PositionEvaluator;
 import GameAnalyzer.chess.Side;
+import GameAnalyzer.chess.engine.AlphaBeta;
 import GameAnalyzer.chess.rules.ChessPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +56,15 @@ public class AppController implements Initializable {
     @FXML
     private Label lightScore;
 
+    @FXML
+    private TextInputControl moveBox;
+
+    @FXML
+    private Button playClicked;
+
+    @FXML
+    private MenuItem playMode;
+
     final int boardSize = 8;
     int gameIndex=0;
 
@@ -60,6 +73,8 @@ public class AppController implements Initializable {
     boolean gameLoaded=Boolean.FALSE;
 
     ChessBoard[] chessBoards;
+
+    ChessBoard playChessBoard;
     int gameSize=0;
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -157,6 +172,7 @@ public class AppController implements Initializable {
 
         }
     }
+
     @FXML
     public void onStartClicked(){
         if(!gameLoaded) {
@@ -198,4 +214,33 @@ public class AppController implements Initializable {
         alert.setContentText("Load the game from the file menu");
         alert.showAndWait();
     }
+
+    @FXML
+    private void onPlayModeClicked(){
+        initializeChessBoard();
+        loadChessBoard(ChessBoardFactory.getStartPositionChessBoard());
+        playChessBoard = ChessBoardFactory.getStartPositionChessBoard();
+    }
+
+    @FXML
+    private void onPlayClicked(){
+        String move = moveBox.getText();
+        Pair<Integer,Integer> position = ANConvertor.getPosition(move);
+        ChessPiece piece = ChessBoardFactory.getChessPiece(move,Side.LIGHT);
+        int x = position.getKey();
+        int y = position.getValue();
+        playChessBoard.setPiece(x,y,piece,playChessBoard.getPiece(x,y).isOccupied());
+        loadChessBoard(playChessBoard);
+
+        AlphaBeta obj = new AlphaBeta();
+        double score = obj.AlphaBetaMin(Integer.MIN_VALUE,Integer.MAX_VALUE, Constants.DEPTH,playChessBoard);
+        Pair<Integer,Integer> computerMove = obj.getBestDarkMove(score);
+        ChessPiece darkMovePiece = obj.getBestDarkMovePiece(score);
+        x = computerMove.getKey();
+        y = computerMove.getValue();
+        playChessBoard.setPiece(x,y,darkMovePiece,playChessBoard.getPiece(x,y).isOccupied());
+        loadChessBoard(playChessBoard);
+
+    }
+
 }

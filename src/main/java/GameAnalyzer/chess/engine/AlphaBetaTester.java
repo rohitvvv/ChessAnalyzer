@@ -12,14 +12,13 @@ import javafx.util.Pair;
 public class AlphaBetaTester {
     public static void main(String[] args) {
         AlphaBeta obj = new AlphaBeta();
-        ChessBoard board = ChessBoardFactory.getPuzzle2();
-        //ChessBoard board = ChessBoardFactory.getStartPositionChessBoard();
+        //ChessBoard board = ChessBoardFactory.getPuzzle2();
+        ChessBoard board = ChessBoardFactory.getStartPositionChessBoard();
         double score = obj.AlphaBetaMax(Integer.MIN_VALUE,Integer.MAX_VALUE, Constants.DEPTH,board);
         Pair<Integer,Integer> move = obj.getBestLightMove(score);
         ChessPiece piece = obj.getBestLightMovePiece(score);
         System.out.println(move);
         System.out.println(piece);
-
 
 //        AlphaBeta obj = new AlphaBeta();
 //        //ChessBoard board = ChessBoardFactory.getPuzzle1();
@@ -29,5 +28,6 @@ public class AlphaBetaTester {
 //        ChessPiece piece = obj.getBestDarkMovePiece(score);
 //        System.out.println(move);
 //        System.out.println(piece);
+
     }
 }
