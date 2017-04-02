@@ -219,7 +219,9 @@ public class AppController implements Initializable {
     private void onPlayModeClicked(){
         initializeChessBoard();
         loadChessBoard(ChessBoardFactory.getStartPositionChessBoard());
+        //loadChessBoard(ChessBoardFactory.getPuzzle1());
         playChessBoard = ChessBoardFactory.getStartPositionChessBoard();
+        //playChessBoard = ChessBoardFactory.getPuzzle1();
     }
 
     @FXML
@@ -234,10 +236,10 @@ public class AppController implements Initializable {
 
         AlphaBeta obj = new AlphaBeta();
         double score = obj.AlphaBetaMin(Integer.MIN_VALUE,Integer.MAX_VALUE, Constants.DEPTH,playChessBoard);
-        Pair<Integer,Integer> computerMove = obj.getBestDarkMove(score);
-        ChessPiece darkMovePiece = obj.getBestDarkMovePiece(score);
-        x = computerMove.getKey();
-        y = computerMove.getValue();
+        Pair<ChessPiece,Pair<Integer,Integer>> computerMove = obj.getBestMove(score,obj.darkTable);
+        ChessPiece darkMovePiece = computerMove.getKey();
+        x = computerMove.getValue().getKey();
+        y = computerMove.getValue().getValue();
         playChessBoard.setPiece(x,y,darkMovePiece,playChessBoard.getPiece(x,y).isOccupied());
         loadChessBoard(playChessBoard);
 

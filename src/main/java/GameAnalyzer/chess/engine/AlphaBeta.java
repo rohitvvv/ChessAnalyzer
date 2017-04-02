@@ -4,12 +4,12 @@ import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
 import GameAnalyzer.chess.Evaluator.PositionEvaluator;
 import GameAnalyzer.chess.Side;
-import GameAnalyzer.chess.rules.ChessPiece;
+import GameAnalyzer.chess.rules.*;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by vaidyar on 4/2/17.
@@ -23,10 +23,9 @@ public class AlphaBeta {
 
    static int count = 0;
    static int TOP_LEVEL= Constants.DEPTH;
-   Map<Double,Pair<Integer,Integer>> scoreToMoveMapLight = new HashMap<>();
-   Map<Double,Pair<Integer,Integer>> scoreToMoveMapDark = new HashMap<>();
-   Map<Double,ChessPiece> scoreToPieceLight = new HashMap<>();
-   Map<Double,ChessPiece> scoreToPieceDark = new HashMap<>();
+
+   public Table<Double,ChessPiece,Pair<Integer,Integer>> lightTable = HashBasedTable.create();
+   public Table<Double,ChessPiece,Pair<Integer,Integer>> darkTable = HashBasedTable.create();
 
    public double AlphaBetaMax(double alpha,double beta,double depthLeft,ChessBoard board){
      List<Pair<Integer,Integer>> lightMoveList;
@@ -55,8 +54,7 @@ public class AlphaBeta {
          //Create a new chessboard with the move.
          score=AlphaBetaMin(alphaScore,beta,depthLeft-1,newBoard);
          if(depthLeft==TOP_LEVEL){ //Record the scores to move mapping at top level
-             scoreToMoveMapLight.put(score,move);
-             scoreToPieceLight.put(score,piece);
+             lightTable.put(score,piece,move);
          }
          if(score>=beta)
              return beta;    //Beta cutoff
@@ -93,8 +91,7 @@ public class AlphaBeta {
 
            score=AlphaBetaMax(alpha,betaScore,depthLeft-1,newBoard);
            if(depthLeft==TOP_LEVEL){ //Record the scores to move mapping at top level
-               scoreToMoveMapDark.put(score,move);
-               scoreToPieceDark.put(score,piece);
+               darkTable.put(score,piece,move);
            }
            if(score<=alpha)
              return alpha;//Alpha cutoff
@@ -108,6 +105,7 @@ public class AlphaBeta {
     //Given a x,y find the piece that can make the move i.e: which piece can move to x y.
     public static ChessPiece findPiece(ChessBoard board,Pair<Integer,Integer> move,Side side) {
         int i,j;
+        List<ChessPiece> pieces = new ArrayList<>(); //Multiple pieces can move to a square. Give precedence to major pieces.
         for(i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
                 ChessBoard.Cell cell = board.getPiece(i,j);
@@ -115,27 +113,64 @@ public class AlphaBeta {
                     ChessPiece piece = cell.getPeice();
                     List<Pair<Integer,Integer>> validMoves = piece.getValidMoves(i,j,board);
                     if(validMoves.contains(move))
-                        return cell.getPeice();
+                        pieces.add(cell.getPeice());
                 }
             }
         }
-      return null;
+        //Give precedence to major
+        for(ChessPiece piece: pieces) {
+            if (piece instanceof Knight)
+                return piece;
+        }
+        for(ChessPiece piece: pieces) {
+            if (piece instanceof Bishop)
+                return piece;
+        }
+        for(ChessPiece piece: pieces) {
+            if (piece instanceof Rook)
+                return piece;
+        }
+        for(ChessPiece piece: pieces) {
+            if (piece instanceof Queen)
+                return piece;
+        }
+        for(ChessPiece piece: pieces) {
+            if (piece instanceof Pawn)
+                return piece;
+        }
+        return null;
     }
 
-    public Pair<Integer,Integer> getBestLightMove(double score){
-       return scoreToMoveMapLight.get(score);
-    }
+     public Pair<ChessPiece,Pair<Integer,Integer>> getBestMove(double score,Table table){
+         Map<ChessPiece,Pair<Integer,Integer>> map = table.row(score);
+         Pair<ChessPiece,Pair<Integer,Integer>> bestMove=null;
+         for(Map.Entry<ChessPiece,Pair<Integer,Integer>> entry : map.entrySet()){
+               if(entry.getKey() instanceof Knight) {
+                   bestMove = new Pair<>(entry.getKey(), entry.getValue());
+                   return bestMove;
+               }
+               if(entry.getKey() instanceof Bishop) {
+                   bestMove = new Pair<>(entry.getKey(), entry.getValue());
+                   return bestMove;
+               }
+         }
+         for(Map.Entry<ChessPiece,Pair<Integer,Integer>> entry : map.entrySet()){
+             if(entry.getKey() instanceof Queen) {
+                 bestMove = new Pair<>(entry.getKey(), entry.getValue());
+                 return bestMove;
+             }
 
-    public Pair<Integer,Integer> getBestDarkMove(double score){
-        return scoreToMoveMapDark.get(score);
-    }
-
-    public ChessPiece getBestLightMovePiece(double score){
-        return scoreToPieceLight.get(score);
-    }
-
-    public ChessPiece getBestDarkMovePiece(double score){
-        return scoreToPieceDark.get(score);
-    }
-
+             if(entry.getKey() instanceof Rook) {
+                 bestMove = new Pair<>(entry.getKey(), entry.getValue());
+                 return bestMove;
+             }
+         }
+         for(Map.Entry<ChessPiece,Pair<Integer,Integer>> entry : map.entrySet()){
+             if(entry.getKey() instanceof Pawn) {
+                 bestMove = new Pair<>(entry.getKey(), entry.getValue());
+                 return bestMove;
+             }
+         }
+        return bestMove;
+     }
 }

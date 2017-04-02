@@ -23,7 +23,7 @@ public class PositionEvaluator {
     static final double ROOK_WEIGHT = 5;
     static final double KING_WEIGHT = 200;
     static final double BISHOP_WEIGHT = 3;
-    static final double MOBILITY = 0.1;
+    static final double MOBILITY = 5;
 
     public static double lightEval = 0;
     public static double darkEval = 0;

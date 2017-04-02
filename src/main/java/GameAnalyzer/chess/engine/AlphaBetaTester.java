@@ -15,10 +15,11 @@ public class AlphaBetaTester {
         //ChessBoard board = ChessBoardFactory.getPuzzle2();
         ChessBoard board = ChessBoardFactory.getStartPositionChessBoard();
         double score = obj.AlphaBetaMax(Integer.MIN_VALUE,Integer.MAX_VALUE, Constants.DEPTH,board);
-        Pair<Integer,Integer> move = obj.getBestLightMove(score);
-        ChessPiece piece = obj.getBestLightMovePiece(score);
-        System.out.println(move);
-        System.out.println(piece);
+//        Pair<Integer,Integer> move = obj.getBestLightMove(score);
+//        ChessPiece piece = obj.getBestLightMovePiece(score);
+        Pair<ChessPiece,Pair<Integer,Integer>> move =obj.getBestMove(score,obj.lightTable);
+        System.out.println(move.getKey());
+        System.out.println(move.getValue());
 
 //        AlphaBeta obj = new AlphaBeta();
 //        //ChessBoard board = ChessBoardFactory.getPuzzle1();
