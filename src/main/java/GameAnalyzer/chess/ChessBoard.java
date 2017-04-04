@@ -3,6 +3,7 @@ package GameAnalyzer.chess;
 import java.util.*;
 
 import GameAnalyzer.chess.rules.*;
+import GameAnalyzer.ui.UIConstants;
 import javafx.util.Pair;
 
 /**
@@ -13,6 +14,7 @@ public class ChessBoard{
 
 	int dimension=8;
 	Cell [][]board = new Cell[dimension][dimension];
+
 	public ChessBoard(ChessBoard board){
 	   //Explicit copy as reference copy will not work
 	   for(int i=0;i<dimension;i++) {
@@ -73,7 +75,7 @@ public class ChessBoard{
 	 * This method sets a piece on the board and resets the previous position of the chess piece
 	 * Follow the following strategy
 	 * 1. Find the piece which can reach x,y
-	 * 2. Move the peice
+	 * 2. Move the piece
 	 * 3. Reset the old position
 	 * @param x
 	 * @param y
@@ -143,7 +145,7 @@ public class ChessBoard{
 											return new Pair<>(i,j);
 						             }
 						break;
-						case "[K]":  if(captureMove==true || board[i][j].isOccupied() && board[i][j].piece instanceof King){
+						case "[K]":  if((captureMove==true || board[i][j].isOccupied()) && board[i][j].piece instanceof King){
 										List<Pair<Integer,Integer>> possibleMoves = ((King) board[i][j].piece).getValidMoves(i,j);
 										if(possibleMoves.contains(checkLocation)&&piece.getSide()==board[i][j].piece.getSide())
 											return new Pair<>(i,j);
@@ -159,6 +161,51 @@ public class ChessBoard{
 				}
 			}
 		return position;
+	}
+
+	public ChessBoard queenSideCaste(Side side){
+		switch (side){
+			case DARK:
+				    board[2][0] = new Cell(new King(Side.DARK));
+				    board[3][0] = new Cell(new Rook(Side.DARK));
+				    board[4][0].reset();
+				    board[4][0].piece=null;
+				    board[0][0].reset();
+				    board[0][0].piece=null;
+				    break;
+			case LIGHT:
+				    board[2][7]= new Cell(new King(Side.LIGHT));
+				    board[3][7]= new Cell(new Rook(Side.LIGHT));
+				    board[4][7].reset();
+				    board[4][7].piece=null;
+				    board[0][7].reset();
+				    board[0][7].piece=null;
+				    break;
+		}
+		System.out.println(this.toString());
+		return this;
+	}
+
+	public ChessBoard kingSideCastle(Side side){
+		switch (side){
+			case DARK:
+                   board[6][0] = new Cell(new King(Side.DARK));
+                   board[5][0] = new Cell(new Rook(Side.DARK));
+                   board[4][0].reset();
+				   board[4][0].piece=null;
+                   board[7][0].reset();
+				   board[7][0].piece=null;
+                   break;
+			case LIGHT:
+				   board[6][7] = new Cell(new King(Side.LIGHT));
+				   board[5][7] = new Cell(new Rook(Side.LIGHT));
+				   board[4][7].reset();
+				   board[4][7].piece=null;
+				   board[7][7].reset();
+				   board[7][7].piece=null;
+				break;
+		}
+		return this;
 	}
 
     //Cell has a chess piece
@@ -228,41 +275,51 @@ public class ChessBoard{
   				    switch (cellObject.piece.toString()){
 						case "[Q]":  switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Queen);
+							           darkPieceCount.put(UIConstants.QueenD,piece.getValidMoves(i,j,this).size());
 							           break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Queen);
+                                        lightPieceCount.put(UIConstants.QueenL,piece.getValidMoves(i,j,this).size());
 										break;
 						}
 						break;
 						case "[R]":  switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Rook);
+                                        darkPieceCount.put(UIConstants.RookD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT:updateCount(lightPieceCount,Constants.Rook);
-										break;
+                                        lightPieceCount.put(UIConstants.RookL,piece.getValidMoves(i,j,this).size());
+							            break;
 						}
 						break;
 						case "[N]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Knight);
-										break;
-							case LIGHT: updateCount(lightPieceCount,Constants.Knight);
-										break;
+                                       darkPieceCount.put(UIConstants.KnightD,piece.getValidMoves(i,j,this).size());
+									   break;
+							case LIGHT:updateCount(lightPieceCount,Constants.Knight);
+                                       lightPieceCount.put(UIConstants.KnightL,piece.getValidMoves(i,j,this).size());
+                                       break;
 						}break;
 						case "[P]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Pawn);
+                                       darkPieceCount.put(UIConstants.PawnD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Pawn);
+                                        lightPieceCount.put(UIConstants.PawnL,piece.getValidMoves(i,j,this).size());
 										break;
 						}break;
 						case "[B]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.Bishop);
+                                       darkPieceCount.put(UIConstants.BishopD,piece.getValidMoves(i,j,this).size());
 										break;
 							case LIGHT: updateCount(lightPieceCount,Constants.Bishop);
+                                        lightPieceCount.put(UIConstants.BishopL,piece.getValidMoves(i,j,this).size());
 										break;
 						}break;
 						case "[K]": switch (piece.getSide()){
 							case DARK: updateCount(darkPieceCount,Constants.King);
-								break;
+                                       break;
 							case LIGHT: updateCount(lightPieceCount,Constants.King);
-								break;
+                                        break;
 						}break;
 					}
 				}
@@ -282,6 +339,46 @@ public class ChessBoard{
 	}
 
 	/**
+	 * Useful for Alpha Beta
+	 */
+	public List<Pair<Integer,Integer>> computeValidLightMoves(){
+		List<Pair<Integer,Integer>> validLightMoves = new ArrayList<>();
+		Map<String,List<Pair<Integer,Integer>>> moveMapping = new HashMap<>();
+		for(int i=0;i<8;i++) {
+			for (int j = 0; j < 8; j++) {
+				Cell cellObject = board[i][j];
+				if(cellObject.isOccupied()){
+					ChessPiece piece= cellObject.piece;
+					if(piece.getSide()==Side.LIGHT) {
+					   validLightMoves.addAll(piece.getValidMoves(i,j,this));
+					}
+				}
+			}
+		}
+		return validLightMoves;
+	}
+
+	/**
+	 * Useful for Alpha Beta
+	 */
+	public List<Pair<Integer,Integer>> computeValidDarkMoves(){
+		List<Pair<Integer,Integer>> validDarkMoves = new ArrayList<>();
+		Map<String,List<Pair<Integer,Integer>>> moveMapping = new HashMap<>();
+		for(int i=0;i<8;i++) {
+			for (int j = 0; j < 8; j++) {
+				Cell cellObject = board[i][j];
+				if(cellObject.isOccupied()){
+					ChessPiece piece= cellObject.piece;
+					if(piece.getSide()==Side.DARK) {
+						validDarkMoves.addAll(piece.getValidMoves(i,j,this));
+					}
+				}
+			}
+		}
+		return validDarkMoves;
+	}
+
+	/**
 	 * Initialize all map enteries to zero
 	 * @param map
 	 */
@@ -292,5 +389,20 @@ public class ChessBoard{
        map.put(Constants.Queen,0);
        map.put(Constants.Rook,0);
        map.put(Constants.King,0);
+       //Use this constants for mobility count
+	   map.put(UIConstants.BishopD,0);
+	   map.put(UIConstants.KnightD,0);
+	   map.put(UIConstants.RookD,0);
+	   map.put(UIConstants.QueenD,0);
+	   map.put(UIConstants.PawnD,0);
+	   map.put(UIConstants.KnightD,0);
+       map.put(UIConstants.BishopL,0);
+       map.put(UIConstants.KnightL,0);
+       map.put(UIConstants.RookL,0);
+       map.put(UIConstants.QueenL,0);
+       map.put(UIConstants.PawnL,0);
+       map.put(UIConstants.KnightL,0);
 	}
+
+
 }

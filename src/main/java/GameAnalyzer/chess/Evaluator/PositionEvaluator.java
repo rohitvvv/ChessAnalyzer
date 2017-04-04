@@ -1,16 +1,12 @@
-    package GameAnalyzer.chess.Evaluator;
+package GameAnalyzer.chess.Evaluator;
 
 import GameAnalyzer.chess.ChessBoard;
 import GameAnalyzer.chess.Constants;
-import GameAnalyzer.chess.Side;
-import GameAnalyzer.chess.rules.*;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import javafx.geometry.Pos;
+import GameAnalyzer.chess.rules.Pawn;
+import GameAnalyzer.ui.UIConstants;
 import javafx.util.Pair;
-
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by vaidyar on 3/20/17.
@@ -21,13 +17,16 @@ import java.util.Map;
  * This will be heavily used in Alpha Beta Pruning Algorithm
  */
 public class PositionEvaluator {
-    static final int PAWN_WEIGHT = 1;
-    static final int KNIGHT_WEIGHT = 3;
-    static final int QUEEN_WEIGHT = 9;
-    static final int ROOK_WEIGHT = 5;
-    static final int KING_WEIGHT = 200;
-    static final int BISHOP_WEIGHT = 3;
+    static final double PAWN_WEIGHT = 1;
+    static final double KNIGHT_WEIGHT = 3;
+    static final double QUEEN_WEIGHT = 9;
+    static final double ROOK_WEIGHT = 5;
+    static final double KING_WEIGHT = 200;
+    static final double BISHOP_WEIGHT = 3;
+    static final double MOBILITY = 5;
 
+    public static double lightEval = 0;
+    public static double darkEval = 0;
     /**
      * Evalue a given chess position
      *
@@ -43,8 +42,8 @@ public class PositionEvaluator {
      * D,S,I = doubled, blocked and isolated pawns
      * M = Mobility (the number of legal moves)
      */
-    public static Integer evaluate(ChessBoard board) {
-        Integer value;
+    public static Double evaluate(ChessBoard board) {
+        Double value;
         Pair<HashMap<String, Integer>, HashMap<String, Integer>> pair;
         pair = board.getPieceCount();
         HashMap lightPieceCount = pair.getKey();
@@ -52,6 +51,8 @@ public class PositionEvaluator {
         Iterator itr = lightPieceCount.keySet().iterator();
 
         int K, Kd, N, Nd, R, Rd, B, Bd, P, Pd, Q, Qd;
+
+        int KLm, KDm,NLm,NDm,RDm,RLm, BDm,BLm,PDm,PLm, QDm,QLm;
 
         K = (Integer) lightPieceCount.get(Constants.King);
         Kd = (Integer) darkPieceCount.get(Constants.King);
@@ -72,13 +73,36 @@ public class PositionEvaluator {
         Qd = (Integer) darkPieceCount.get(Constants.Queen);
 
 
+        NLm = (Integer)lightPieceCount.get(UIConstants.KnightL);
+        NDm = (Integer)darkPieceCount.get(UIConstants.KnightD);
+
+        RDm = (Integer)darkPieceCount.get(UIConstants.RookD);
+        RLm = (Integer)lightPieceCount.get(UIConstants.RookL);
+
+        BDm =  (Integer)darkPieceCount.get(UIConstants.BishopD);
+        BLm =  (Integer)lightPieceCount.get(UIConstants.BishopL);
+
+        QDm =  (Integer)darkPieceCount.get(UIConstants.QueenD);
+        QLm =  (Integer)lightPieceCount.get(UIConstants.QueenL);
+
+        PDm =(Integer)darkPieceCount.get(UIConstants.PawnD);
+        PLm =(Integer)lightPieceCount.get(UIConstants.PawnL);
+
+        int lightMobility = NLm + BLm + PLm + RLm + QLm;
+        int darkMobility =  NDm + BDm + PDm + RDm + QDm;
+
         value = KING_WEIGHT * (K - Kd) +
                   QUEEN_WEIGHT * (Q - Qd) +
                   ROOK_WEIGHT * (R - Rd) +
                   BISHOP_WEIGHT * (B - Bd) +
-                  KNIGHT_WEIGHT * (K - Kd) +
-                  PAWN_WEIGHT * (P - Pd);
+                  KNIGHT_WEIGHT * (N- Nd) +
+                  PAWN_WEIGHT * (P - Pd) +
+                  MOBILITY * (lightMobility - darkMobility);
 
+        lightEval = K * KING_WEIGHT + Q *QUEEN_WEIGHT + R * ROOK_WEIGHT + B *BISHOP_WEIGHT  +
+                    N* KNIGHT_WEIGHT + P* PAWN_WEIGHT + lightMobility * MOBILITY;
+        darkEval = Kd * KING_WEIGHT+ Qd * QUEEN_WEIGHT + Rd * ROOK_WEIGHT + Bd * BISHOP_WEIGHT +
+                   Nd * KNIGHT_WEIGHT + Pd * PAWN_WEIGHT + darkMobility * MOBILITY;
         return value;
     }
 

@@ -51,4 +51,20 @@ public class ANConverterTest {
 		final Pair<Integer,Integer> pair2 = new Pair<>(3,4);
 		assertEquals(ANConvertor.getPosition("cxd4"),pair2);
 	}
+
+	@Test
+	public void testChequeMove(){
+		final Pair<Integer,Integer> pair1 = new Pair<>(1,4);
+		assertEquals(ANConvertor.getPosition("Axb4+"),pair1);
+		final Pair<Integer,Integer> pair2 = new Pair<>(3,4);
+		assertEquals(ANConvertor.getPosition("cxd4+"),pair2);
+	}
+
+//	@Test
+//	public void testRegularMove(){
+//		final Pair<Integer,Integer> pair1 = new Pair<>(2,0);
+//		assertEquals(ANConvertor.getPosition("Rfc8"),pair1);
+////		final Pair<Integer,Integer> pair2 = new Pair<>(3,4);
+////		assertEquals(ANConvertor.getPosition("cxd4+"),pair2);
+//	}
 }
